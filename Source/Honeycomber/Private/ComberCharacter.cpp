@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Actors/Interactables/Interactable.h"
 
 // Sets default values
 AComberCharacter::AComberCharacter()
@@ -21,7 +22,9 @@ AComberCharacter::AComberCharacter()
 	check(ComberBody);
 	ComberBody->SetupAttachment(SceneRoot);
 	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	UCharacterMovementComponent* ComberMovement = GetCharacterMovement();
+	ComberMovement->bOrientRotationToMovement = true;
+	ComberMovement->RotationRate = FRotator(0, 720, 0);
 }
 
 // Called when the game starts or when spawned
@@ -40,19 +43,15 @@ void AComberCharacter::BeginPlay()
 			Subsystem->AddMappingContext(InputMapping, 0);
 		}
 	}
-}
 
-// Called every frame
-void AComberCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AComberCharacter::ComberOverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddUniqueDynamic(this, &AComberCharacter::ComberOverlapEnd);
 }
 
 // Called to bind functionality to input
 void AComberCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked< UEnhancedInputComponent>(PlayerInputComponent))
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AComberCharacter::MoveComber);
 	}
@@ -69,5 +68,30 @@ void AComberCharacter::MoveComber(const FInputActionValue& Value)
 
 	const FVector ControllerRightDirection = FRotationMatrix(ControllerYawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(ControllerRightDirection, MoveVector.X);
+}
+
+void AComberCharacter::ComberOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->ActorHasTag("Interactable"))
+	{
+		if (CurrentInteractable)
+		{
+			CurrentInteractable->ToggleInteractionPopup(false);
+		}
+		CurrentInteractable = CastChecked<AInteractable, AActor>(OtherActor);
+		CurrentInteractable->ToggleInteractionPopup(true);
+	}
+}
+
+void AComberCharacter::ComberOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor->ActorHasTag("Interactable"))
+	{
+		if (OtherActor == CurrentInteractable)
+		{
+			CurrentInteractable->ToggleInteractionPopup(false);
+			CurrentInteractable = nullptr;
+		}
+	}
 }
 

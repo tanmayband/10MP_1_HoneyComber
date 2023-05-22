@@ -10,6 +10,7 @@
 class UStaticMeshComponent;
 class UInputMappingContext;
 class UInputAction;
+class AInteractable;
 
 UCLASS()
 class HONEYCOMBER_API AComberCharacter : public ACharacter
@@ -25,9 +26,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -39,5 +37,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		UInputAction* MoveAction;
 
+	AInteractable* CurrentInteractable;
+
 	void MoveComber(const FInputActionValue& Value);
+	UFUNCTION()
+		void ComberOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void ComberOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };
