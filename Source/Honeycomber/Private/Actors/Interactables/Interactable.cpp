@@ -48,6 +48,6 @@ void AInteractable::BeginPlay()
 {
 	Super::BeginPlay();
 	InteractionPopup = CastChecked<UInteractionPopup, UUserWidget>(InteractionPopupComponent->GetUserWidgetObject());
-	InteractionPopup->SetupPopup(GetActorLabel());
+	InteractionPopup->SetupPopup(InteractableName);
 }
 

@@ -36,4 +36,7 @@ private:
 		UWidgetComponent* InteractionPopupComponent;
 
 	UInteractionPopup* InteractionPopup;
+
+	UPROPERTY(EditAnywhere)
+		FString InteractableName = "SomeInteractable";
 };
