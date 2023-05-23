@@ -46,7 +46,8 @@ void AInteractable::Interact()
 void AInteractable::CycleOptions(int32 nextIndex)
 {
 	CurrentOptionIndex = FMath::Clamp(CurrentOptionIndex + nextIndex, 0, InteractionOptions.Num() - 1);
-	UE_LOG(LogTemp, Warning, TEXT("Selected option: %s"), *InteractionOptions[CurrentOptionIndex]);
+	//UE_LOG(LogTemp, Warning, TEXT("Selected option: %s"), *InteractionOptions[CurrentOptionIndex]);
+	InteractionPopup->SelectInteractionOption(CurrentOptionIndex);
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +55,6 @@ void AInteractable::BeginPlay()
 {
 	Super::BeginPlay();
 	InteractionPopup = CastChecked<UInteractionPopup, UUserWidget>(InteractionPopupComponent->GetUserWidgetObject());
-	InteractionPopup->SetupPopup(InteractableName);
+	InteractionPopup->SetupPopup(InteractableName, InteractionOptions);
 }
 
