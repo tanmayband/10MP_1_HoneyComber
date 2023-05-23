@@ -21,7 +21,7 @@ void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptio
 		newOptionSlot->SetPadding(FMargin(0, 10, 0, 0));
 		AllOptions.Add(newOption);
 	}
-	SelectInteractionOption(0);
+	//SelectInteractionOption(0);
 }
 
 void UInteractionPopup::SelectInteractionOption(int32 optionIndex)

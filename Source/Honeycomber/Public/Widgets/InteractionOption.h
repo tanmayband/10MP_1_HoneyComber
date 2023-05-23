@@ -14,8 +14,14 @@ class HONEYCOMBER_API UInteractionOption : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	void PreConstruct(bool IsDesignTime);
+
 	void SetupOption(FString option);
 	void ToggleSelectOption(bool selected);
+
+	void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
+	void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
+	FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 
 private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
