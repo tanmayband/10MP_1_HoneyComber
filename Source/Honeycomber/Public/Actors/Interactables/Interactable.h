@@ -22,6 +22,7 @@ public:
 
 	void ToggleInteractionPopup(bool show);
 	void Interact();
+	void CycleOptions(int32 nextIndex);
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,4 +40,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		FString InteractableName = "SomeInteractable";
+	UPROPERTY(EditAnywhere)
+		TArray<FString> InteractionOptions;
+	int32 CurrentOptionIndex = 0;
 };

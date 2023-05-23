@@ -35,6 +35,7 @@ void AComberCharacter::BeginPlay()
 	// Get the player controller
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
+		//PC->SetShowMouseCursor(true);
 		// Get the local player subsystem
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
@@ -54,6 +55,8 @@ void AComberCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AComberCharacter::MoveComber);
+		EnhancedInputComponent->BindAction(CycleOptionsAction, ETriggerEvent::Triggered, this, &AComberCharacter::CycleInteractionOptions);
+		EnhancedInputComponent->BindAction(SelectOptionAction, ETriggerEvent::Triggered, this, &AComberCharacter::SelectInteractionOption);
 	}
 }
 
@@ -68,6 +71,17 @@ void AComberCharacter::MoveComber(const FInputActionValue& Value)
 
 	const FVector ControllerRightDirection = FRotationMatrix(ControllerYawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(ControllerRightDirection, MoveVector.X);
+}
+
+void AComberCharacter::CycleInteractionOptions(const FInputActionValue& Value)
+{
+	const float CycleDirection = Value.Get<float>();
+	CurrentInteractable->CycleOptions((int32)CycleDirection);
+}
+
+void AComberCharacter::SelectInteractionOption(const FInputActionValue& Value)
+{
+	CurrentInteractable->Interact();
 }
 
 void AComberCharacter::ComberOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

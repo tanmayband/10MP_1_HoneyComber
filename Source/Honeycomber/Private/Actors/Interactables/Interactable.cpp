@@ -40,7 +40,13 @@ void AInteractable::ToggleInteractionPopup(bool show)
 
 void AInteractable::Interact()
 {
-	
+	UE_LOG(LogTemp, Warning, TEXT("Option executed: %s"), *InteractionOptions[CurrentOptionIndex]);
+}
+
+void AInteractable::CycleOptions(int32 nextIndex)
+{
+	CurrentOptionIndex = FMath::Clamp(CurrentOptionIndex + nextIndex, 0, InteractionOptions.Num() - 1);
+	UE_LOG(LogTemp, Warning, TEXT("Selected option: %s"), *InteractionOptions[CurrentOptionIndex]);
 }
 
 // Called when the game starts or when spawned

@@ -36,10 +36,16 @@ private:
 		UInputMappingContext* InputMapping;
 	UPROPERTY(EditDefaultsOnly)
 		UInputAction* MoveAction;
+	UPROPERTY(EditDefaultsOnly)
+		UInputAction* CycleOptionsAction;
+	UPROPERTY(EditDefaultsOnly)
+		UInputAction* SelectOptionAction;
 
 	AInteractable* CurrentInteractable;
 
 	void MoveComber(const FInputActionValue& Value);
+	void CycleInteractionOptions(const FInputActionValue& Value);
+	void SelectInteractionOption(const FInputActionValue& Value);
 	UFUNCTION()
 		void ComberOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
