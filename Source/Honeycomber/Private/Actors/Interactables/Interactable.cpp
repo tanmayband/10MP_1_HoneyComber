@@ -27,14 +27,14 @@ AInteractable::AInteractable()
 	InteractionPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	InteractionPopupComponent->SetWidgetClass(UInteractionPopup::StaticClass());
 	InteractionPopupComponent->SetRelativeLocation(FVector(0, 0, 100));
-	ToggleInteractionPopup(false);
+	InteractionPopupComponent->SetHiddenInGame(true);
 
 	Tags.Add("Interactable" );
 }
 
 void AInteractable::ToggleInteractionPopup(bool show)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Menu %d for %s"), show, *GetActorLabel());
+	InteractionPopup->UnhighlightAllInteractionOptions();
 	InteractionPopupComponent->SetHiddenInGame(!show);
 }
 
@@ -44,11 +44,16 @@ void AInteractable::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("Option executed: %s"), *InteractionOptions[CurrentOptionIndex]);
 }
 
+void AInteractable::InteractOption(int32 index)
+{
+	CurrentOptionIndex = index;
+	Interact();
+}
+
 void AInteractable::CycleOptions(int32 nextIndex)
 {
 	CurrentOptionIndex = FMath::Clamp(CurrentOptionIndex + nextIndex, 0, InteractionOptions.Num() - 1);
-	//UE_LOG(LogTemp, Warning, TEXT("Selected option: %s"), *InteractionOptions[CurrentOptionIndex]);
-	InteractionPopup->SelectInteractionOption(CurrentOptionIndex);
+	InteractionPopup->HighlightInteractionOption(CurrentOptionIndex);
 }
 
 // Called when the game starts or when spawned
@@ -57,5 +62,6 @@ void AInteractable::BeginPlay()
 	Super::BeginPlay();
 	InteractionPopup = CastChecked<UInteractionPopup, UUserWidget>(InteractionPopupComponent->GetUserWidgetObject());
 	InteractionPopup->SetupPopup(InteractableName, InteractionOptions);
+	InteractionPopup->OnOptionSelectedDelegate.BindUObject(this, &AInteractable::InteractOption);
 }
 

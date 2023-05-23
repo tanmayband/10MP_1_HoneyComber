@@ -22,6 +22,8 @@ public:
 
 	void ToggleInteractionPopup(bool show);
 	void Interact();
+	UFUNCTION()
+		void InteractOption(int32 index);
 	void CycleOptions(int32 nextIndex);
 
 protected:

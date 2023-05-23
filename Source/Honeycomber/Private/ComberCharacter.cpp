@@ -56,7 +56,7 @@ void AComberCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AComberCharacter::MoveComber);
 		EnhancedInputComponent->BindAction(CycleOptionsAction, ETriggerEvent::Triggered, this, &AComberCharacter::CycleInteractionOptions);
-		EnhancedInputComponent->BindAction(SelectOptionAction, ETriggerEvent::Triggered, this, &AComberCharacter::SelectInteractionOption);
+		EnhancedInputComponent->BindAction(SelectOptionAction, ETriggerEvent::Triggered, this, &AComberCharacter::HighlightInteractionOption);
 	}
 }
 
@@ -80,7 +80,7 @@ void AComberCharacter::CycleInteractionOptions(const FInputActionValue& Value)
 		CurrentInteractable->CycleOptions((int32)CycleDirection);
 }
 
-void AComberCharacter::SelectInteractionOption(const FInputActionValue& Value)
+void AComberCharacter::HighlightInteractionOption(const FInputActionValue& Value)
 {
 	if (CurrentInteractable)
 		CurrentInteractable->Interact();

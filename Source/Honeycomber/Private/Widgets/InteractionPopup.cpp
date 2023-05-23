@@ -12,27 +12,37 @@ void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptio
 	ClearOptions();
 	InteractableName->SetText(FText::FromString(PopupName));
 
+	int32 iOption(0);
 	for (FString option : PopupOptions)
 	{
 		UInteractionOption* newOption = CreateWidget<UInteractionOption>(GetWorld()->GetFirstPlayerController(), InteractionOptionClass);
-		newOption->SetupOption(option);
+		newOption->SetupOption(option, iOption);
 		OptionsBox->AddChildToVerticalBox(newOption);
 		UVerticalBoxSlot* newOptionSlot = Cast<UVerticalBoxSlot>(newOption->Slot);
 		newOptionSlot->SetPadding(FMargin(0, 10, 0, 0));
+
+		newOption->OnOptionSelectedDelegate.BindUObject(this, &UInteractionPopup::InteractionOptionSelected);
+
 		AllOptions.Add(newOption);
+		iOption++;
 	}
-	//SelectInteractionOption(0);
+	//HighlightInteractionOption(0);
 }
 
-void UInteractionPopup::SelectInteractionOption(int32 optionIndex)
+void UInteractionPopup::HighlightInteractionOption(int32 optionIndex)
 {
+	UnhighlightAllInteractionOptions();
 	if (AllOptions.Num() > 0)
 	{
-		for (UInteractionOption* optionWidget : AllOptions)
-		{
-			optionWidget->ToggleSelectOption(false);
-		}
-		AllOptions[optionIndex]->ToggleSelectOption(true);
+		AllOptions[optionIndex]->ToggleHighlightOption(true);
+	}
+}
+
+void UInteractionPopup::UnhighlightAllInteractionOptions()
+{
+	for (UInteractionOption* optionWidget : AllOptions)
+	{
+		optionWidget->ToggleHighlightOption(false);
 	}
 }
 
@@ -46,4 +56,9 @@ void UInteractionPopup::ClearOptions()
 		}
 	}
 	AllOptions.Empty();
+}
+
+void UInteractionPopup::InteractionOptionSelected(int32 optionIndex)
+{
+	OnOptionSelectedDelegate.ExecuteIfBound(optionIndex);
 }

@@ -9,28 +9,30 @@ void UInteractionOption::PreConstruct(bool IsDesignTime)
 	//SetVisibility(ESlateVisibility::Visible);
 }
 
-void UInteractionOption::SetupOption(FString option)
+void UInteractionOption::SetupOption(FString option, int32 optionIndex)
 {
+	OptionIndex = optionIndex;
 	OptionName->SetText(FText::FromString(option));
-	ToggleSelectOption(false);
+	ToggleHighlightOption(false);
 }
 
-void UInteractionOption::ToggleSelectOption(bool selected)
+void UInteractionOption::ToggleHighlightOption(bool selected)
 {
 	OptionBG->SetVisibility(selected ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
 void UInteractionOption::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	ToggleSelectOption(true);
+	ToggleHighlightOption(true);
 }
 
 void UInteractionOption::NativeOnMouseLeave(const FPointerEvent& MouseEvent)
 {
-	ToggleSelectOption(false);
+	ToggleHighlightOption(false);
 }
 
 FReply UInteractionOption::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	OnOptionSelectedDelegate.ExecuteIfBound(OptionIndex);
 	return FEventReply().NativeReply;
 }
