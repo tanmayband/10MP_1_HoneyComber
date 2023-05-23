@@ -40,7 +40,8 @@ void AInteractable::ToggleInteractionPopup(bool show)
 
 void AInteractable::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Option executed: %s"), *InteractionOptions[CurrentOptionIndex]);
+	if(InteractionOptions.Num() > 0)
+		UE_LOG(LogTemp, Warning, TEXT("Option executed: %s"), *InteractionOptions[CurrentOptionIndex]);
 }
 
 void AInteractable::CycleOptions(int32 nextIndex)
