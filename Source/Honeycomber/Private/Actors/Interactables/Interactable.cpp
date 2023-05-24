@@ -26,10 +26,14 @@ AInteractable::AInteractable()
 	InteractionPopupComponent->SetupAttachment(SceneRoot);
 	InteractionPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	InteractionPopupComponent->SetWidgetClass(UInteractionPopup::StaticClass());
-	InteractionPopupComponent->SetRelativeLocation(FVector(0, 0, 100));
 	InteractionPopupComponent->SetHiddenInGame(true);
 
 	Tags.Add("Interactable" );
+}
+
+void AInteractable::OnConstruction(const FTransform& Transform)
+{
+	InteractionPopupComponent->SetRelativeLocation(PopupLocation);
 }
 
 void AInteractable::ToggleInteractionPopup(bool show)

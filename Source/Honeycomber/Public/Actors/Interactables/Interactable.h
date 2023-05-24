@@ -19,12 +19,16 @@ class HONEYCOMBER_API AInteractable : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AInteractable();
+	void OnConstruction(const FTransform& Transform);
 
 	void ToggleInteractionPopup(bool show);
 	void Interact();
 	UFUNCTION()
 		void InteractOption(int32 index);
 	void CycleOptions(int32 nextIndex);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (MakeEditWidget = true))
+		FVector PopupLocation = FVector(0, 0, 50);
 
 protected:
 	// Called when the game starts or when spawned
