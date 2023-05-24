@@ -34,14 +34,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
 	UPROPERTY(EditAnywhere)
 		USceneComponent* SceneRoot;
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* InteractionArea;
 	UPROPERTY(EditAnywhere)
 		UWidgetComponent* InteractionPopupComponent;
-
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UInteractionPopup> InteractionPopupClass;
 	UInteractionPopup* InteractionPopup;
 
 	UPROPERTY(EditAnywhere)

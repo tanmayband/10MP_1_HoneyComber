@@ -25,7 +25,6 @@ AInteractable::AInteractable()
 	check(InteractionPopupComponent);
 	InteractionPopupComponent->SetupAttachment(SceneRoot);
 	InteractionPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	InteractionPopupComponent->SetWidgetClass(UInteractionPopup::StaticClass());
 	InteractionPopupComponent->SetPivot(FVector2D(0.5, 1));
 	InteractionPopupComponent->SetHiddenInGame(true);
 
@@ -35,6 +34,7 @@ AInteractable::AInteractable()
 void AInteractable::OnConstruction(const FTransform& Transform)
 {
 	InteractionPopupComponent->SetRelativeLocation(PopupLocation);
+	InteractionPopupComponent->SetWidgetClass(InteractionPopupClass);
 }
 
 void AInteractable::ToggleInteractionPopup(bool show)
