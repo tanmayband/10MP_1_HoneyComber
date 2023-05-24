@@ -25,3 +25,22 @@ int32 ABeehive::GetCurrentHoneyJars()
 {
 	return CurrentHoneyJars;
 }
+
+void ABeehive::InteractOption(int32 index)
+{
+	switch (index)
+	{
+		case 0:
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Got honey"));
+			break;
+		}
+		case 1:
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Got wax"));
+			break;
+		}
+	default:
+		break;
+	}
+}

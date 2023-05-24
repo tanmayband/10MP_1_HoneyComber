@@ -19,6 +19,7 @@ public:
 
 	//UFUNCTION(BlueprintCallable)
 	int32 GetCurrentHoneyJars();
+	void InteractOption(int32 index) override;
 
 private:
 	UPROPERTY(VisibleAnywhere)

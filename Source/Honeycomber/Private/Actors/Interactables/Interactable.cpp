@@ -69,4 +69,3 @@ void AInteractable::BeginPlay()
 	InteractionPopup->SetupPopup(InteractableName, InteractionOptions);
 	InteractionPopup->OnOptionSelectedDelegate.BindUObject(this, &AInteractable::InteractOption);
 }
-
