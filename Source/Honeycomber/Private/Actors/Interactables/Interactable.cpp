@@ -26,6 +26,7 @@ AInteractable::AInteractable()
 	InteractionPopupComponent->SetupAttachment(SceneRoot);
 	InteractionPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	InteractionPopupComponent->SetWidgetClass(UInteractionPopup::StaticClass());
+	InteractionPopupComponent->SetPivot(FVector2D(0.5, 1));
 	InteractionPopupComponent->SetHiddenInGame(true);
 
 	Tags.Add("Interactable" );
