@@ -40,6 +40,13 @@ void ABeehive::Tick(float DeltaSeconds)
 		CurrentHoneyJars = FMath::Clamp(CurrentHoneyJars + honeyThisTick, 0, (float)MaxHoneyJars);
 	}
 	HoneyDisplay->UpdateState(FString::Printf(TEXT("%d jars"), (int)CurrentHoneyJars));
+
+	if (CurrentWaxJars < MaxWaxJars)
+	{
+		float waxThisTick = WaxJarRatePerBee * NumBees * DeltaSeconds;
+		CurrentWaxJars = FMath::Clamp(CurrentWaxJars + waxThisTick, 0, (float)MaxWaxJars);
+	}
+	WaxDisplay->UpdateState(FString::Printf(TEXT("%d jars"), (int)CurrentWaxJars));
 }
 
 int32 ABeehive::GetCurrentHoneyJars()
@@ -55,16 +62,22 @@ void ABeehive::InteractOption(int32 index)
 		{
 			if(CurrentHoneyJars > 1)
 			{
-				CurrentHoneyJars -= 1;
-				UE_LOG(LogTemp, Warning, TEXT("Got honey"));
-				ExtractedResourceDelegate.ExecuteIfBound(EResourceType::HONEY);
+				if(ExtractedResourceDelegate.IsBound())
+				{
+					CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
+				}
 			}
 			break;
 		}
 		case 1:
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Got wax"));
-			ExtractedResourceDelegate.ExecuteIfBound(EResourceType::WAX);
+			if (CurrentWaxJars > 1)
+			{
+				if (ExtractedResourceDelegate.IsBound())
+				{
+					CurrentWaxJars -= ExtractedResourceDelegate.Execute(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
+				}
+			}
 			break;
 		}
 	default:

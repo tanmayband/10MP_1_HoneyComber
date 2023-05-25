@@ -10,7 +10,7 @@
 class UStaticMeshComponent;
 class UStateDisplay;
 
-DECLARE_DELEGATE_OneParam(FExtractedResourceSignature, EResourceType resourceType)
+DECLARE_DELEGATE_RetVal_TwoParams(int32, FExtractedResourceSignature, EResourceType resourceType, int32 resourceAmount)
 
 UCLASS()
 class HONEYCOMBER_API ABeehive : public AInteractable
@@ -36,12 +36,23 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* BeehiveMesh;
 	UPROPERTY(EditAnywhere)
-		float HoneyJarRatePerBee = 0.001f;		// number of jars per bee per second
-	UPROPERTY(EditAnywhere)
 		int32 NumBees = 50;
+	
+	UPROPERTY(EditAnywhere)
+		float HoneyJarRatePerBee = 0.001f;		// number of jars per bee per second
 	UPROPERTY(EditAnywhere)
 		int32 MaxHoneyJars = 10;
 	float CurrentHoneyJars;
+	UPROPERTY(EditAnywhere)
+		int32 HoneyExtractAmount = 1;
+
+	UPROPERTY(EditAnywhere)
+		float WaxJarRatePerBee = 0.002f;		// number of jars per bee per second
+	UPROPERTY(EditAnywhere)
+		int32 MaxWaxJars = 5;
+	float CurrentWaxJars;
+	UPROPERTY(EditAnywhere)
+		int32 WaxExtractAmount = 1;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UStateDisplay> StateDisplayClass;

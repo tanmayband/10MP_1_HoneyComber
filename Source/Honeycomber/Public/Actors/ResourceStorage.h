@@ -23,6 +23,7 @@ public:
 	void OnConstruction(const FTransform& Transform);
 	void SetupResourceStorage(EResourceType resourceType, int32 maxAmount, int32 currentAmount = 0);
 	void ModifyResourceAmount(int32 amountDelta);
+	int32 GetAvailableSpace();
 
 protected:
 	// Called when the game starts or when spawned

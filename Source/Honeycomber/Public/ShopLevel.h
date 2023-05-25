@@ -22,15 +22,4 @@ protected:
 
 private:
 	AComberCharacter* ComberCharacter;
-
-	UPROPERTY(EditAnywhere)
-		TArray<ABeehive*> Beehives;
-
-	UPROPERTY(EditAnywhere)
-		AResourceStorage* HoneyStore;
-	UPROPERTY(EditAnywhere)
-		AResourceStorage* WaxStore;
-
-	UFUNCTION()
-		void StoreResource(EResourceType resourceType);
 };

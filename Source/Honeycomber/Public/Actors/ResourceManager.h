@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Utils/Enums.h"
 #include "ResourceManager.generated.h"
+
+class ABeehive;
+class AResourceStorage;
 
 UCLASS()
 class HONEYCOMBER_API AResourceManager : public AActor
@@ -19,8 +23,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UPROPERTY(EditAnywhere)
+		TArray<ABeehive*> Beehives;
+	UPROPERTY(EditAnywhere)
+		TArray<AResourceStorage*> HoneyStores;
+	UPROPERTY(EditAnywhere)
+		TArray<AResourceStorage*> WaxStores;
 
+	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 };

@@ -45,6 +45,11 @@ void AResourceStorage::ModifyResourceAmount(int32 amountDelta)
 	ResourceDisplay->UpdateState(FString::Printf(TEXT("%d jars"), CurrentResourceAmount));
 }
 
+int32 AResourceStorage::GetAvailableSpace()
+{
+	return MaxResourceAmount - CurrentResourceAmount;
+}
+
 // Called when the game starts or when spawned
 void AResourceStorage::BeginPlay()
 {
