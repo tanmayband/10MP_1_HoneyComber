@@ -33,11 +33,13 @@ void ABeehive::InteractOption(int32 index)
 		case 0:
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Got honey"));
+			ExtractedResourceDelegate.ExecuteIfBound(EResourceType::HONEY);
 			break;
 		}
 		case 1:
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Got wax"));
+			ExtractedResourceDelegate.ExecuteIfBound(EResourceType::WAX);
 			break;
 		}
 	default:

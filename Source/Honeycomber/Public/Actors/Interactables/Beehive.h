@@ -4,9 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Actors/Interactables/Interactable.h"
+#include "Utils/Enums.h"
 #include "Beehive.generated.h"
 
 class UStaticMeshComponent;
+
+DECLARE_DELEGATE_OneParam(FExtractedResourceSignature, EResourceType resourceType)
 
 UCLASS()
 class HONEYCOMBER_API ABeehive : public AInteractable
@@ -20,6 +23,8 @@ public:
 	//UFUNCTION(BlueprintCallable)
 	int32 GetCurrentHoneyJars();
 	void InteractOption(int32 index) override;
+
+	FExtractedResourceSignature ExtractedResourceDelegate;
 
 private:
 	UPROPERTY(VisibleAnywhere)

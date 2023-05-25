@@ -10,7 +10,7 @@
 void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptions)
 {
 	ClearOptions();
-	InteractableName->SetText(FText::FromString(PopupName));
+	SetupPopupName(PopupName);
 
 	int32 iOption(0);
 	for (FString option : PopupOptions)
@@ -27,6 +27,11 @@ void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptio
 		iOption++;
 	}
 	//HighlightInteractionOption(0);
+}
+
+void UInteractionPopup::SetupPopupName(FString PopupName)
+{
+	InteractableName->SetText(FText::FromString(PopupName));
 }
 
 void UInteractionPopup::HighlightInteractionOption(int32 optionIndex)

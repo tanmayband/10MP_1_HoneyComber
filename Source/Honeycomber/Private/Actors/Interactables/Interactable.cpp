@@ -61,6 +61,12 @@ void AInteractable::CycleOptions(int32 nextIndex)
 	InteractionPopup->HighlightInteractionOption(CurrentOptionIndex);
 }
 
+void AInteractable::SetInteractableName(FString newName)
+{
+	InteractableName = newName;
+	InteractionPopup->SetupPopupName(InteractableName);
+}
+
 // Called when the game starts or when spawned
 void AInteractable::BeginPlay()
 {

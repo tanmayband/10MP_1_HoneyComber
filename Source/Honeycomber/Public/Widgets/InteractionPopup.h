@@ -19,6 +19,7 @@ class HONEYCOMBER_API UInteractionPopup : public UUserWidget
 	
 public:
 	void SetupPopup(FString PopupName, TArray<FString> PopupOptions);
+	void SetupPopupName(FString PopupName);
 	void HighlightInteractionOption(int32 optionIndex);
 	void UnhighlightAllInteractionOptions();
 

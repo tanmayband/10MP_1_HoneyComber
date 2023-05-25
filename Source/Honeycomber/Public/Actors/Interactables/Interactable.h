@@ -26,6 +26,7 @@ public:
 	UFUNCTION()
 		virtual void InteractOption(int32 index);
 	void CycleOptions(int32 nextIndex);
+	void SetInteractableName(FString newName);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (MakeEditWidget = true))
 		FVector PopupLocation = FVector(0, 0, 50);
