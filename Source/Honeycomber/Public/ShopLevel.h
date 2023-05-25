@@ -10,6 +10,7 @@
 class AComberCharacter;
 class AInteractable;
 class ABeehive;
+class AResourceStorage;
 
 UCLASS()
 class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
@@ -26,10 +27,9 @@ private:
 		TArray<ABeehive*> Beehives;
 
 	UPROPERTY(EditAnywhere)
-		AInteractable* HoneyStore;
+		AResourceStorage* HoneyStore;
 	UPROPERTY(EditAnywhere)
-		AInteractable* WaxStore;
-	int32 honeyJars = 0;
+		AResourceStorage* WaxStore;
 
 	UFUNCTION()
 		void StoreResource(EResourceType resourceType);

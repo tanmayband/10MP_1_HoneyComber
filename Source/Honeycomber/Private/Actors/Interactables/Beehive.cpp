@@ -53,8 +53,12 @@ void ABeehive::InteractOption(int32 index)
 	{
 		case 0:
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Got honey"));
-			ExtractedResourceDelegate.ExecuteIfBound(EResourceType::HONEY);
+			if(CurrentHoneyJars > 1)
+			{
+				CurrentHoneyJars -= 1;
+				UE_LOG(LogTemp, Warning, TEXT("Got honey"));
+				ExtractedResourceDelegate.ExecuteIfBound(EResourceType::HONEY);
+			}
 			break;
 		}
 		case 1:

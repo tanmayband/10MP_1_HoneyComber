@@ -3,6 +3,7 @@
 
 #include "ShopLevel.h"
 #include "Actors/Interactables//Beehive.h"
+#include "Actors/ResourceStorage.h"
 
 void AShopLevel::BeginPlay()
 {
@@ -18,12 +19,12 @@ void AShopLevel::StoreResource(EResourceType resourceType)
 	{
 		case EResourceType::HONEY:
 		{
-			honeyJars += 1;
-			HoneyStore->SetInteractableName(FString::Printf(TEXT("Honey: %d jars"), honeyJars));
+			HoneyStore->ModifyResourceAmount(1);
 			break;
 		}
 		case EResourceType::WAX:
 		{
+			WaxStore->ModifyResourceAmount(1);
 			break;
 		}
 		default:
