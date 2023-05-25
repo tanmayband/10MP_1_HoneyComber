@@ -3,6 +3,7 @@
 
 #include "Widgets/InteractionOption.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 void UInteractionOption::PreConstruct(bool IsDesignTime)
 {
@@ -14,6 +15,7 @@ void UInteractionOption::SetupOption(FString option, int32 optionIndex)
 	OptionIndex = optionIndex;
 	OptionName->SetText(FText::FromString(option));
 	ToggleHighlightOption(false);
+	ToggleClickableOption(true);
 }
 
 void UInteractionOption::ToggleHighlightOption(bool selected)
@@ -21,9 +23,21 @@ void UInteractionOption::ToggleHighlightOption(bool selected)
 	OptionBG->SetVisibility(selected ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
+void UInteractionOption::ToggleClickableOption(bool clickable)
+{
+	isClickable = clickable;
+	FLinearColor TextColour = isClickable ? FLinearColor(1,1,1,1) : FLinearColor(0.5f, 0.5f, 0.5f, 0.5f);
+	OptionName->SetColorAndOpacity(TextColour);
+	if (!isClickable)
+	{
+		ToggleHighlightOption(false);
+	}
+}
+
 void UInteractionOption::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	ToggleHighlightOption(true);
+	if(isClickable)
+		ToggleHighlightOption(true);
 }
 
 void UInteractionOption::NativeOnMouseLeave(const FPointerEvent& MouseEvent)
@@ -33,6 +47,9 @@ void UInteractionOption::NativeOnMouseLeave(const FPointerEvent& MouseEvent)
 
 FReply UInteractionOption::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	OnOptionSelectedDelegate.ExecuteIfBound(OptionIndex);
+	if (isClickable)
+	{
+		OnOptionSelectedDelegate.ExecuteIfBound(OptionIndex);
+	}
 	return FEventReply().NativeReply;
 }

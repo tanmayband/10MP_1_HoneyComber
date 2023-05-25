@@ -3,6 +3,9 @@
 
 #include "Actors/Interactables/Beehive.h"
 #include "Components/StaticMeshComponent.h"
+#include "Widgets/InteractionPopup.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/StateDisplay.h"
 
 ABeehive::ABeehive()
 {
@@ -10,6 +13,23 @@ ABeehive::ABeehive()
 	BeehiveMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BeehiveMesh"));
 	check(BeehiveMesh)
 	BeehiveMesh->SetupAttachment(SceneRoot);
+
+	HoneyDisplayComponent = CreateDefaultSubobject<UWidgetComponent>("HoneyDisplay");
+	check(HoneyDisplayComponent);
+	HoneyDisplayComponent->SetupAttachment(SceneRoot);
+	HoneyDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
+
+	WaxDisplayComponent = CreateDefaultSubobject<UWidgetComponent>("WaxDisplay");
+	check(WaxDisplayComponent);
+	WaxDisplayComponent->SetupAttachment(SceneRoot);
+	WaxDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
+}
+
+void ABeehive::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	HoneyDisplayComponent->SetWidgetClass(StateDisplayClass);
+	WaxDisplayComponent->SetWidgetClass(StateDisplayClass);
 }
 
 void ABeehive::Tick(float DeltaSeconds)
@@ -19,6 +39,7 @@ void ABeehive::Tick(float DeltaSeconds)
 		float honeyThisTick = HoneyJarRatePerBee * NumBees * DeltaSeconds;
 		CurrentHoneyJars = FMath::Clamp(CurrentHoneyJars + honeyThisTick, 0, (float)MaxHoneyJars);
 	}
+	HoneyDisplay->UpdateState(FString::Printf(TEXT("%d jars"), (int)CurrentHoneyJars));
 }
 
 int32 ABeehive::GetCurrentHoneyJars()
@@ -45,4 +66,32 @@ void ABeehive::InteractOption(int32 index)
 	default:
 		break;
 	}
+}
+
+void ABeehive::DisableExtraction(EResourceType resourceType)
+{
+	switch (resourceType)
+	{
+		case EResourceType::HONEY:
+		{
+			InteractionPopup->ToggleOptionEnabled(0, false);
+			break;
+		}
+		case EResourceType::WAX:
+		{
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void ABeehive::BeginPlay()
+{
+	Super::BeginPlay();
+
+	HoneyDisplay = CastChecked<UStateDisplay, UUserWidget>(HoneyDisplayComponent->GetUserWidgetObject());
+	WaxDisplay = CastChecked<UStateDisplay, UUserWidget>(WaxDisplayComponent->GetUserWidgetObject());
+	HoneyDisplay->SetupState("Honey:", "0 jars");
+	WaxDisplay->SetupState("Wax:", "0 jars");
 }

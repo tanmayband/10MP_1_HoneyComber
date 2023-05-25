@@ -51,6 +51,11 @@ void UInteractionPopup::UnhighlightAllInteractionOptions()
 	}
 }
 
+void UInteractionPopup::ToggleOptionEnabled(int32 optionIndex, bool enabled)
+{
+	AllOptions[optionIndex]->ToggleClickableOption(enabled);
+}
+
 void UInteractionPopup::ClearOptions()
 {
 	for (UUserWidget* optionWidget : AllOptions)

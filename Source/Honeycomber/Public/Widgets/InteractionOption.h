@@ -7,6 +7,7 @@
 #include "InteractionOption.generated.h"
 
 class UTextBlock;
+class UImage;
 
 DECLARE_DELEGATE_OneParam(FOnOptionSelectedSignature, int32 SelectedOptionIndex)
 
@@ -20,6 +21,7 @@ public:
 
 	void SetupOption(FString option, int32 optionIndex);
 	void ToggleHighlightOption(bool highlighted);
+	void ToggleClickableOption(bool clickable);
 
 	void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 	void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
@@ -29,8 +31,9 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		UWidget* OptionBG;
+		UImage* OptionBG;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 		UTextBlock* OptionName;
 	int32 OptionIndex;
+	bool isClickable = true;
 };

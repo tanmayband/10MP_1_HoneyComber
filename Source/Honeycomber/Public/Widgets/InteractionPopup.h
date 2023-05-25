@@ -22,6 +22,7 @@ public:
 	void SetupPopupName(FString PopupName);
 	void HighlightInteractionOption(int32 optionIndex);
 	void UnhighlightAllInteractionOptions();
+	void ToggleOptionEnabled(int32 optionIndex, bool enabled);
 
 	FOnOptionSelectedSignature OnOptionSelectedDelegate;
 
