@@ -2,15 +2,20 @@
 
 
 #include "Widgets/InteractionPopup.h"
+#include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
 #include "Components/TextBlock.h"
 #include "Widgets/InteractionOption.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 
-void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptions)
+void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot)
 {
 	ClearOptions();
 	SetupPopupName(PopupName);
+	UCanvasPanelSlot* ContainerSlot = Cast<UCanvasPanelSlot>(Container->Slot);
+	ContainerSlot->SetAnchors(FAnchors(PopupPivot.X, PopupPivot.Y));
+	ContainerSlot->SetAlignment(PopupPivot);;
 
 	int32 iOption(0);
 	for (FString option : PopupOptions)

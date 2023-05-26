@@ -25,7 +25,6 @@ AInteractable::AInteractable()
 	check(InteractionPopupComponent);
 	InteractionPopupComponent->SetupAttachment(SceneRoot);
 	InteractionPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	InteractionPopupComponent->SetPivot(FVector2D(0.5, 1));
 	InteractionPopupComponent->SetHiddenInGame(true);
 
 	Tags.Add("Interactable" );
@@ -35,6 +34,7 @@ void AInteractable::OnConstruction(const FTransform& Transform)
 {
 	InteractionPopupComponent->SetRelativeLocation(PopupLocation);
 	InteractionPopupComponent->SetWidgetClass(InteractionPopupClass);
+	InteractionPopupComponent->SetPivot(PopupPivot);
 }
 
 void AInteractable::ToggleInteractionPopup(bool show)
@@ -72,6 +72,6 @@ void AInteractable::BeginPlay()
 {
 	Super::BeginPlay();
 	InteractionPopup = CastChecked<UInteractionPopup, UUserWidget>(InteractionPopupComponent->GetUserWidgetObject());
-	InteractionPopup->SetupPopup(InteractableName, InteractionOptions);
+	InteractionPopup->SetupPopup(InteractableName, InteractionOptions, PopupPivot);
 	InteractionPopup->OnOptionSelectedDelegate.BindUObject(this, &AInteractable::InteractOption);
 }

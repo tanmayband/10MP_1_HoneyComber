@@ -39,7 +39,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		USceneComponent* SceneRoot;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StorageMesh;
 	UPROPERTY(EditAnywhere)
 		UWidgetComponent* ResourceDisplayComponent;

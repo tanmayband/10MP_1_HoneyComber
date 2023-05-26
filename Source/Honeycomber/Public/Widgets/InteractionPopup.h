@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "InteractionPopup.generated.h"
 
+class UCanvasPanel;
 class UTextBlock;
 class UVerticalBox;
 class UInteractionOption;
@@ -18,7 +19,7 @@ class HONEYCOMBER_API UInteractionPopup : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	void SetupPopup(FString PopupName, TArray<FString> PopupOptions);
+	void SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot);
 	void SetupPopupName(FString PopupName);
 	void HighlightInteractionOption(int32 optionIndex);
 	void UnhighlightAllInteractionOptions();
@@ -27,6 +28,8 @@ public:
 	FOnOptionSelectedSignature OnOptionSelectedDelegate;
 
 private:
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+		UCanvasPanel* Container;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 		UTextBlock* InteractableName;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))

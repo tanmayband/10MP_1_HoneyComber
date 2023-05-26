@@ -7,5 +7,5 @@
 
 void AShopLevel::BeginPlay()
 {
-	
+	Super::BeginPlay();
 }

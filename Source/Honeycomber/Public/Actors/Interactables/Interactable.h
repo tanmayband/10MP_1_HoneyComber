@@ -50,4 +50,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TArray<FString> InteractionOptions;
 	int32 CurrentOptionIndex = 0;
+	UPROPERTY(EditAnywhere)
+		FVector2D PopupPivot = FVector2D(0.5,0.5);
 };

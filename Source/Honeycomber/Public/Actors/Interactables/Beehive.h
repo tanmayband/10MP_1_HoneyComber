@@ -26,6 +26,7 @@ public:
 	int32 GetCurrentHoneyJars();
 	void InteractOption(int32 index) override;
 	void DisableExtraction(EResourceType resourceType);
+	void UpdateBees();
 
 	FExtractedResourceSignature ExtractedResourceDelegate;
 
@@ -33,10 +34,12 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* BeehiveMesh;
 	UPROPERTY(EditAnywhere)
 		int32 NumBees = 50;
+	UPROPERTY(EditAnywhere)
+		int32 NumBeesRequiringOneJar = 50;		// should be <= than starter numBees
 	
 	UPROPERTY(EditAnywhere)
 		float HoneyJarRatePerBee = 0.001f;		// number of jars per bee per second

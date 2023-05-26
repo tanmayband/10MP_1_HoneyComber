@@ -103,6 +103,18 @@ void ABeehive::DisableExtraction(EResourceType resourceType)
 	}
 }
 
+void ABeehive::UpdateBees()
+{
+	// how many bees can sustain in current honey
+	int32 possibleBees = CurrentHoneyJars * NumBeesRequiringOneJar;
+	int32 survivingBees = FMath::Min(NumBees, possibleBees);
+	
+	// TODO: tell some widget how many bees died (NumBees - survivingBees)
+
+	// update current bees
+	NumBees = survivingBees;
+}
+
 void ABeehive::BeginPlay()
 {
 	Super::BeginPlay();

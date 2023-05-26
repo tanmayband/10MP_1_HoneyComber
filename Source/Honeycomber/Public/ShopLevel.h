@@ -18,7 +18,7 @@ class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
 	GENERATED_BODY()
 
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 private:
 	AComberCharacter* ComberCharacter;

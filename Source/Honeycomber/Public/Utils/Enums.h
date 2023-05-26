@@ -7,3 +7,12 @@ enum class EResourceType : uint8
 	HONEY,
 	WAX
 };
+
+UENUM()
+enum class EVisitorype : uint8
+{
+	VISITOR,
+	CUSTOMER,
+	PROTECTOR,
+	PROTESTER
+};
