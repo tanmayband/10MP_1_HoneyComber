@@ -24,14 +24,21 @@ AVisitorManager::AVisitorManager()
 
 void AVisitorManager::Tick(float DeltaSeconds)
 {
-	if (CurrentVisitor && CurrentVisitorSplineProgress < VisitorSplineDuration)
+	if (CurrentVisitor && !CurrentVisitorSplineMovementDone)
 	{
-		CurrentVisitorSplineProgress += DeltaSeconds;
+		CurrentVisitorSplineProgress += (DeltaSeconds * CurrentVisitorSplineDirection);
 		CurrentVisitor->SetActorTransform(VisitorSpline->GetTransformAtTime(CurrentVisitorSplineProgress, ESplineCoordinateSpace::World));
-		if (CurrentVisitorSplineProgress >= VisitorSplineDuration)
+
+		if(CurrentVisitorSplineDirection > 0 && CurrentVisitorSplineProgress >= VisitorSplineDuration)
 		{
+			CurrentVisitorSplineMovementDone = true;
 			CurrentVisitor->StartTalking();
 			SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
+		}
+		else if (CurrentVisitorSplineDirection < 0 && CurrentVisitorSplineProgress <= 0)
+		{
+			CurrentVisitorSplineMovementDone = true;
+			SpawnVisitor();
 		}
 	}
 }
@@ -56,6 +63,8 @@ void AVisitorManager::SpawnVisitor()
 		CurrentVisitor->Destroy();
 	}
 	CurrentVisitorSplineProgress = 0;
+	CurrentVisitorSplineDirection = 1;
+	CurrentVisitorSplineMovementDone = false;
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.Owner = this;
 	FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, false);
@@ -72,6 +81,11 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numReso
 
 void AVisitorManager::ResponsePicked(int32 optionIndex)
 {
-	ResourceManager->TryAddingResources(EResourceType::HONEY, -2);
+	if(optionIndex == 0)
+		ResourceManager->TryAddingResources(EResourceType::HONEY, -2);
+	CurrentVisitor->StopTalking();
+	SaleDesk->ClearDeskOptions();
+	CurrentVisitorSplineMovementDone = false;
+	CurrentVisitorSplineDirection = -1;
 }
 

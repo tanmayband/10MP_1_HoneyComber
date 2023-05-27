@@ -31,6 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		virtual void ProcessOption(int32 optionIndex);
 	void StartTalking();
+	void StopTalking();
 
 protected:
 	// Called when the game starts or when spawned

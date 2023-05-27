@@ -10,6 +10,11 @@ void ADesk::UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResourc
 	InteractionPopup->ToggleOptionEnabled(0, haveEnoughResources);
 }
 
+void ADesk::ClearDeskOptions()
+{
+	InteractionPopup->ClearOptions();
+}
+
 void ADesk::InteractOption(int32 index)
 {
 	OnVisitorResponseDelegate.ExecuteIfBound(index);

@@ -43,6 +43,8 @@ private:
 	float VisitorSplineDuration = 5.0f;
 	float VisitorSplineLength;
 	float CurrentVisitorSplineProgress;
+	int8 CurrentVisitorSplineDirection = 1;
+	bool CurrentVisitorSplineMovementDone;
 
 	void SpawnVisitor();
 	void ResourcesUpdated(EResourceType resourceType, int32 numResources);

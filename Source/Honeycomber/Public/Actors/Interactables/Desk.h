@@ -16,6 +16,7 @@ class HONEYCOMBER_API ADesk : public AInteractable
 public:
 	FVisitorResponseSignature OnVisitorResponseDelegate;
 	void UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResources);
+	void ClearDeskOptions();
 
 private:
 	void InteractOption(int32 index) override;

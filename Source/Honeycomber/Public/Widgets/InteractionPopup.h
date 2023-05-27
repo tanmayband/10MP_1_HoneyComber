@@ -22,6 +22,7 @@ public:
 	void SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot);
 	void SetupPopupName(FString PopupName);
 	void SetupPopupOptions(TArray<FString> PopupOptions);
+	void ClearOptions();
 	void HighlightInteractionOption(int32 optionIndex);
 	void UnhighlightAllInteractionOptions();
 	void ToggleOptionEnabled(int32 optionIndex, bool enabled);
@@ -39,7 +40,6 @@ private:
 		TSubclassOf<UInteractionOption> InteractionOptionClass;
 	TArray<UInteractionOption*> AllOptions;
 
-	void ClearOptions();
 	UFUNCTION()
 		void InteractionOptionSelected(int32 optionIndex);
 };

@@ -59,6 +59,11 @@ void AVisitor::StartTalking()
 	ToggleStateDisplay(true);
 }
 
+void AVisitor::StopTalking()
+{
+	ToggleStateDisplay(false);
+}
+
 // Called when the game starts or when spawned
 void AVisitor::BeginPlay()
 {
