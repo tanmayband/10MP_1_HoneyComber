@@ -14,7 +14,7 @@ class HONEYCOMBER_API ADesk : public AInteractable
 	GENERATED_BODY()
 
 public:
-	FVisitorResponseSignature VisitorResponseDelegate;
+	FVisitorResponseSignature OnVisitorResponseDelegate;
 	void UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResources);
 
 private:

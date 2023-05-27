@@ -12,5 +12,5 @@ void ADesk::UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResourc
 
 void ADesk::InteractOption(int32 index)
 {
-	VisitorResponseDelegate.ExecuteIfBound(index);
+	OnVisitorResponseDelegate.ExecuteIfBound(index);
 }

@@ -46,4 +46,5 @@ private:
 
 	void SpawnVisitor();
 	void ResourcesUpdated(EResourceType resourceType, int32 numResources);
+	void ResponsePicked(int32 optionIndex);
 };

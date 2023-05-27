@@ -20,6 +20,7 @@ class HONEYCOMBER_API AResourceManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AResourceManager();
+	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, int32 numResources);
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
@@ -40,6 +41,4 @@ private:
 		{EResourceType::WAX, 0},
 		{EResourceType::ITEM, 0}
 	};
-
-	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 };

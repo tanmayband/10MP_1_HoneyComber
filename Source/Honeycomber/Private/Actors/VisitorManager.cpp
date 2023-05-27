@@ -44,6 +44,7 @@ void AVisitorManager::BeginPlay()
 	VisitorSpline->Duration = VisitorSplineDuration;
 
 	ResourceManager->OnUpdatedResourceDelegate.BindUObject(this, &AVisitorManager::ResourcesUpdated);
+	SaleDesk->OnVisitorResponseDelegate.BindUObject(this, &AVisitorManager::ResponsePicked);
 
 	SpawnVisitor();
 }
@@ -67,5 +68,10 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numReso
 	{
 		SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
 	}
+}
+
+void AVisitorManager::ResponsePicked(int32 optionIndex)
+{
+	ResourceManager->TryAddingResources(EResourceType::HONEY, -2);
 }
 
