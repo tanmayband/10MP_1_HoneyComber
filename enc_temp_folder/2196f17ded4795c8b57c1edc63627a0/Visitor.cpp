@@ -62,12 +62,13 @@ void AVisitor::ProcessOption(int32 optionIndex)
 UDataTable* AVisitor::StartTalking()
 {
 	return VisitorDialogueTable;
+	//VisitorDialogue->UpdateDialogueLine("Hi, can I have 2 jars of honey?");
+	//ToggleDialogueDisplay(true);
 }
 
 void AVisitor::DisplayDialogueLine(FString dialogueLine)
 {
 	VisitorDialogue->UpdateDialogueLine(dialogueLine);
-	ToggleDialogueDisplay(true);
 }
 
 void AVisitor::StopTalking()

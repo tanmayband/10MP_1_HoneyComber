@@ -10,7 +10,7 @@ enum class EResourceType : uint8
 };
 
 UENUM()
-enum class EVisitorype : uint8
+enum class EVisitorType : uint8
 {
 	VISITOR,
 	CUSTOMER,
@@ -19,9 +19,9 @@ enum class EVisitorype : uint8
 };
 
 UENUM()
-enum class EVisitorDialogue : uint8
+enum class EDialogueType : uint8
 {
-	BUY,
-	SELL,
-	CHAT
+	CHAT,
+	ASK,
+	GIVE
 };

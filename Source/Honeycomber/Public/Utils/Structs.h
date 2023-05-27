@@ -15,16 +15,18 @@ struct FExchangeProduct : public FTableRowBase
 };
 
 USTRUCT()
-struct FVisitorDialogue : public FTableRowBase
+struct FDialogueDetails : public FTableRowBase
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
+		EDialogueType DialogueType;
+	UPROPERTY(EditAnywhere)
+		FString DialogueEvent;
+	UPROPERTY(EditAnywhere)
 		FString DialogueText;
 	UPROPERTY(EditAnywhere)
-		EVisitorDialogue DialogueType;
-	UPROPERTY(EditAnywhere)
-		FExchangeProduct DialogueData;
-	UPROPERTY(EditAnywhere)
 		TArray<FName> NextDialogues;
+	UPROPERTY(EditAnywhere)
+		int8 DialogueEventValue;
 };

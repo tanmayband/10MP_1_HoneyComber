@@ -2,7 +2,7 @@
 
 
 #include "Actors/ResourceManager.h"
-#include "Actors/Interactables//Beehive.h"
+#include "Actors/Interactables/Beehive.h"
 #include "Actors/ResourceStorage.h"
 #include "Actors/MoneyStorage.h"
 

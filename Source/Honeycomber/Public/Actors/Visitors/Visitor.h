@@ -11,6 +11,7 @@ class USceneComponent;
 class UStaticMeshComponent;
 class UWidgetComponent;
 class UDialogueWidget;
+class UDataTable;
 
 UCLASS()
 class HONEYCOMBER_API AVisitor : public AActor
@@ -21,7 +22,7 @@ public:
 	// Sets default values for this actor's properties
 	AVisitor();
 	UFUNCTION(BlueprintCallable)
-		void SetupVisitor(EVisitorype visitorType, FString visitorName);
+		void SetupVisitor(EVisitorType visitorType, FString visitorName);
 	UFUNCTION(BlueprintCallable)
 		void UpdateOptions(TArray<FString> responseOptions);
 	UFUNCTION(BlueprintPure)
@@ -30,7 +31,9 @@ public:
 		void ToggleDialogueDisplay(bool show);
 	UFUNCTION(BlueprintCallable)
 		virtual void ProcessOption(int32 optionIndex);
-	void StartTalking();
+	
+	UDataTable* StartTalking();
+	void DisplayDialogueLine(FString dialogueLine);
 	void StopTalking();
 
 protected:
@@ -45,8 +48,11 @@ private:
 	UPROPERTY(EditAnywhere)
 		UWidgetComponent* VisitorDialogueComponent;
 	UDialogueWidget* VisitorDialogue;
+
+	//UPROPERTY(EditAnywhere)
+	UDataTable* VisitorDialogueTable;
 	
 	FString VisitorName;
-	EVisitorype VisitorType = EVisitorype::VISITOR;
+	EVisitorType VisitorType = EVisitorType::VISITOR;
 	TArray<FString> ResponseOptions = {"Yes, here you go!", "Sorry, we're out"};
 };

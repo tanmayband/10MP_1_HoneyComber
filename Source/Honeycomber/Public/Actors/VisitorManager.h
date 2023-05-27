@@ -11,6 +11,8 @@ class USplineComponent;
 class AVisitor;
 class ADesk;
 class AResourceManager;
+class ADialogueManager;
+class UDataTable;
 
 UCLASS()
 class HONEYCOMBER_API AVisitorManager : public AActor
@@ -38,6 +40,8 @@ private:
 		TSubclassOf<AVisitor> VisitorClass;
 	UPROPERTY(EditAnywhere)
 		AResourceManager* ResourceManager;
+	UPROPERTY(EditAnywhere)
+		ADialogueManager* DialogueManager;
 	
 	AVisitor* CurrentVisitor;
 	float VisitorSplineDuration = 5.0f;
@@ -45,6 +49,8 @@ private:
 	float CurrentVisitorSplineProgress;
 	int8 CurrentVisitorSplineDirection = 1;
 	bool CurrentVisitorSplineMovementDone;
+	UPROPERTY(EditAnywhere)
+		UDataTable* CurrentVisitorDialogueTable;
 
 	void SpawnVisitor();
 	void ResourcesUpdated(EResourceType resourceType, int32 numResources);

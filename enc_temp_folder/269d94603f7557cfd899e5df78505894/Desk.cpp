@@ -7,7 +7,7 @@
 void ADesk::UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResources)
 {
 	InteractionPopup->SetupPopupOptions(newOptions);
-	//InteractionPopup->ToggleOptionEnabled(0, haveEnoughResources);
+	InteractionPopup->ToggleOptionEnabled(0, haveEnoughResources);
 }
 
 void ADesk::ClearDeskOptions()

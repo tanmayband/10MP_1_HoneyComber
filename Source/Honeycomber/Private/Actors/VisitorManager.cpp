@@ -6,6 +6,7 @@
 #include "Actors/Visitors/Visitor.h"
 #include "Actors/Interactables/Desk.h"
 #include "Actors/ResourceManager.h"
+#include "Actors/Dialogues/DialogueManager.h"
 
 // Sets default values
 AVisitorManager::AVisitorManager()
@@ -32,8 +33,12 @@ void AVisitorManager::Tick(float DeltaSeconds)
 		if(CurrentVisitorSplineDirection > 0 && CurrentVisitorSplineProgress >= VisitorSplineDuration)
 		{
 			CurrentVisitorSplineMovementDone = true;
-			CurrentVisitor->StartTalking();
-			SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
+			//CurrentVisitorDialogueTable = CurrentVisitor->StartTalking();
+			FString CurrentDialogueText = DialogueManager->StartDialogue(CurrentVisitorDialogueTable, "1");
+			CurrentVisitor->DisplayDialogueLine(CurrentDialogueText);
+
+			SaleDesk->UpdateDeskOptions(DialogueManager->GetOptions(), false);
+			//SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
 		}
 		else if (CurrentVisitorSplineDirection < 0 && CurrentVisitorSplineProgress <= 0)
 		{
@@ -69,7 +74,7 @@ void AVisitorManager::SpawnVisitor()
 	SpawnInfo.Owner = this;
 	FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, false);
 	CurrentVisitor = GetWorld()->SpawnActor<AVisitor>(VisitorClass, VisitorSpline->GetTransformAtSplinePoint(0, ESplineCoordinateSpace::World), SpawnInfo);
-	CurrentVisitor->SetupVisitor(EVisitorype::CUSTOMER, "TestCustomer");
+	CurrentVisitor->SetupVisitor(EVisitorType::CUSTOMER, "TestCustomer");
 }
 
 void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numResources)
