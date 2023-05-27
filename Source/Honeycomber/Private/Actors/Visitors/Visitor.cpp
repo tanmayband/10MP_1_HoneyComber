@@ -5,7 +5,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Widgets/StateDisplay.h"
+#include "Widgets/DialogueWidget.h"
 
 // Sets default values
 AVisitor::AVisitor()
@@ -21,17 +21,22 @@ AVisitor::AVisitor()
 	check(VisitorMesh)
 	VisitorMesh->SetupAttachment(SceneRoot);
 
-	VisitorDisplayComponent = CreateDefaultSubobject<UWidgetComponent>("VisitorDisplay");
-	check(VisitorDisplayComponent);
-	VisitorDisplayComponent->SetupAttachment(SceneRoot);
-	VisitorDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	ToggleStateDisplay(false);
+	VisitorDialogueComponent = CreateDefaultSubobject<UWidgetComponent>("VisitorDialogue");
+	check(VisitorDialogueComponent);
+	VisitorDialogueComponent->SetupAttachment(SceneRoot);
+	VisitorDialogueComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	VisitorDialogueComponent->SetRelativeLocation(FVector(-150, 0, 0));
+	ToggleDialogueDisplay(false);
 }
 
 void AVisitor::SetupVisitor(EVisitorype visitorType, FString visitorName)
 {
 	VisitorType = visitorType;
 	VisitorName = visitorName;
+	VisitorDialogue = CastChecked<UDialogueWidget, UUserWidget>(VisitorDialogueComponent->GetUserWidgetObject());
+	VisitorDialogue->SetupDialogueWidget(FVector2D(0.5, 1));
+	VisitorDialogueComponent->SetPivot(FVector2D(0.5, 1));
+	//VisitorDialogue->SetDialogueBGColour();
 }
 
 void AVisitor::UpdateOptions(TArray<FString> responseOptions)
@@ -45,9 +50,9 @@ TArray<FString> AVisitor::GetOptions()
 	return ResponseOptions;
 }
 
-void AVisitor::ToggleStateDisplay(bool show)
+void AVisitor::ToggleDialogueDisplay(bool show)
 {
-	VisitorDisplayComponent->SetHiddenInGame(!show);
+	VisitorDialogueComponent->SetHiddenInGame(!show);
 }
 
 void AVisitor::ProcessOption(int32 optionIndex)
@@ -56,19 +61,18 @@ void AVisitor::ProcessOption(int32 optionIndex)
 
 void AVisitor::StartTalking()
 {
-	ToggleStateDisplay(true);
+	VisitorDialogue->UpdateDialogueLine("Hi, can I have 2 jars of honey?");
+	ToggleDialogueDisplay(true);
 }
 
 void AVisitor::StopTalking()
 {
-	ToggleStateDisplay(false);
+	ToggleDialogueDisplay(false);
 }
 
 // Called when the game starts or when spawned
 void AVisitor::BeginPlay()
 {
 	Super::BeginPlay();
-	VisitorDisplay = CastChecked<UStateDisplay, UUserWidget>(VisitorDisplayComponent->GetUserWidgetObject());
-	VisitorDisplay->SetupState("Hi, can I have 2 jars of honey?", "");
 }
 

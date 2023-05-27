@@ -69,6 +69,7 @@ void AVisitorManager::SpawnVisitor()
 	SpawnInfo.Owner = this;
 	FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, false);
 	CurrentVisitor = GetWorld()->SpawnActor<AVisitor>(VisitorClass, VisitorSpline->GetTransformAtSplinePoint(0, ESplineCoordinateSpace::World), SpawnInfo);
+	CurrentVisitor->SetupVisitor(EVisitorype::CUSTOMER, "TestCustomer");
 }
 
 void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numResources)

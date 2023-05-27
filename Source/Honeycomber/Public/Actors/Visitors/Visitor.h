@@ -10,7 +10,7 @@
 class USceneComponent;
 class UStaticMeshComponent;
 class UWidgetComponent;
-class UStateDisplay;
+class UDialogueWidget;
 
 UCLASS()
 class HONEYCOMBER_API AVisitor : public AActor
@@ -27,7 +27,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		TArray<FString> GetOptions();
 	UFUNCTION(BlueprintCallable)
-		void ToggleStateDisplay(bool show);
+		void ToggleDialogueDisplay(bool show);
 	UFUNCTION(BlueprintCallable)
 		virtual void ProcessOption(int32 optionIndex);
 	void StartTalking();
@@ -43,8 +43,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* VisitorMesh;
 	UPROPERTY(EditAnywhere)
-		UWidgetComponent* VisitorDisplayComponent;
-	UStateDisplay* VisitorDisplay;
+		UWidgetComponent* VisitorDialogueComponent;
+	UDialogueWidget* VisitorDialogue;
 	
 	FString VisitorName;
 	EVisitorype VisitorType = EVisitorype::VISITOR;

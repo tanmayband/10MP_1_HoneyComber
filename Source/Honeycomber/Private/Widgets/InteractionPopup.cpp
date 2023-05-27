@@ -14,7 +14,7 @@ void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptio
 	SetupPopupName(PopupName);
 	UCanvasPanelSlot* ContainerSlot = Cast<UCanvasPanelSlot>(Container->Slot);
 	ContainerSlot->SetAnchors(FAnchors(PopupPivot.X, PopupPivot.Y));
-	ContainerSlot->SetAlignment(PopupPivot);;
+	ContainerSlot->SetAlignment(PopupPivot);
 	SetupPopupOptions(PopupOptions);
 	
 	//HighlightInteractionOption(0);
