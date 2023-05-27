@@ -73,7 +73,7 @@ void AVisitorManager::SpawnVisitor()
 
 void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numResources)
 {
-	if (CurrentVisitor)
+	if (CurrentVisitor && CurrentVisitorSplineMovementDone)
 	{
 		SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
 	}
@@ -82,7 +82,11 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numReso
 void AVisitorManager::ResponsePicked(int32 optionIndex)
 {
 	if(optionIndex == 0)
+	{
 		ResourceManager->TryAddingResources(EResourceType::HONEY, -2);
+		ResourceManager->AddMoney(10);
+	}
+
 	CurrentVisitor->StopTalking();
 	SaleDesk->ClearDeskOptions();
 	CurrentVisitorSplineMovementDone = false;

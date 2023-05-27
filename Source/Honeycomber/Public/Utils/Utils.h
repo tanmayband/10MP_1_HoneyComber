@@ -11,10 +11,10 @@ namespace EnumUtils
 		switch (resourceType)
 		{
 		case EResourceType::HONEY:
-			resourceName = "Honey";
+			resourceName = "Honey jars";
 			break;
 		case EResourceType::WAX:
-			resourceName = "Wax";
+			resourceName = "Wax jars";
 			break;
 		default:
 			break;

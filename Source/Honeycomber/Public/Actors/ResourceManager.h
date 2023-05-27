@@ -9,6 +9,7 @@
 
 class ABeehive;
 class AResourceStorage;
+class AMoneyStorage;
 
 DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, int32 resourceAmount)
 
@@ -22,6 +23,7 @@ public:
 	AResourceManager();
 	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, int32 numResources);
+	void AddMoney(int32 numMoney);
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
 protected:
@@ -35,6 +37,8 @@ private:
 		TArray<AResourceStorage*> HoneyStores;
 	UPROPERTY(EditAnywhere)
 		TArray<AResourceStorage*> WaxStores;
+	UPROPERTY(EditAnywhere)
+		AMoneyStorage* MoneyStore;
 
 	TMap<EResourceType, int32> ResourcesData = {
 		{EResourceType::HONEY, 0},

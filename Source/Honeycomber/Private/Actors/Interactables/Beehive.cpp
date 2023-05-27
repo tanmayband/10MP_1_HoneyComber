@@ -39,14 +39,14 @@ void ABeehive::Tick(float DeltaSeconds)
 		float honeyThisTick = HoneyJarRatePerBee * NumBees * DeltaSeconds;
 		CurrentHoneyJars = FMath::Clamp(CurrentHoneyJars + honeyThisTick, 0, (float)MaxHoneyJars);
 	}
-	HoneyDisplay->UpdateState(FString::Printf(TEXT("%d jars"), (int)CurrentHoneyJars));
+	HoneyDisplay->UpdateState(FString::Printf(TEXT("%d"), (int)CurrentHoneyJars));
 
 	if (CurrentWaxJars < MaxWaxJars)
 	{
 		float waxThisTick = WaxJarRatePerBee * NumBees * DeltaSeconds;
 		CurrentWaxJars = FMath::Clamp(CurrentWaxJars + waxThisTick, 0, (float)MaxWaxJars);
 	}
-	WaxDisplay->UpdateState(FString::Printf(TEXT("%d jars"), (int)CurrentWaxJars));
+	WaxDisplay->UpdateState(FString::Printf(TEXT("%d"), (int)CurrentWaxJars));
 }
 
 int32 ABeehive::GetCurrentHoneyJars()
@@ -121,6 +121,6 @@ void ABeehive::BeginPlay()
 
 	HoneyDisplay = CastChecked<UStateDisplay, UUserWidget>(HoneyDisplayComponent->GetUserWidgetObject());
 	WaxDisplay = CastChecked<UStateDisplay, UUserWidget>(WaxDisplayComponent->GetUserWidgetObject());
-	HoneyDisplay->SetupState("Honey:", "0 jars");
-	WaxDisplay->SetupState("Wax:", "0 jars");
+	HoneyDisplay->SetupState("Honey jars:", "0");
+	WaxDisplay->SetupState("Wax jars:", "0");
 }

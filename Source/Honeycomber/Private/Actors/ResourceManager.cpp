@@ -4,6 +4,7 @@
 #include "Actors/ResourceManager.h"
 #include "Actors/Interactables//Beehive.h"
 #include "Actors/ResourceStorage.h"
+#include "Actors/MoneyStorage.h"
 
 // Sets default values
 AResourceManager::AResourceManager()
@@ -16,6 +17,11 @@ AResourceManager::AResourceManager()
 bool AResourceManager::HaveEnoughResources(EResourceType resourceType, int32 numResources)
 {
 	return ResourcesData[resourceType] >= numResources;
+}
+
+void AResourceManager::AddMoney(int32 numMoney)
+{
+	MoneyStore->AddMoney(numMoney);
 }
 
 // Called when the game starts or when spawned
