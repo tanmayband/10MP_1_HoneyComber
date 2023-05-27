@@ -5,7 +5,8 @@ enum class EResourceType : uint8
 {
 	NONE,
 	HONEY,
-	WAX
+	WAX,
+	ITEM
 };
 
 UENUM()
@@ -15,4 +16,12 @@ enum class EVisitorype : uint8
 	CUSTOMER,
 	PROTECTOR,
 	PROTESTER
+};
+
+UENUM()
+enum class EVisitorDialogue : uint8
+{
+	BUY,
+	SELL,
+	CHAT
 };

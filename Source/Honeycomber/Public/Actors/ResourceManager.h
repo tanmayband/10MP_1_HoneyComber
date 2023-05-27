@@ -10,6 +10,8 @@
 class ABeehive;
 class AResourceStorage;
 
+DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, int32 resourceAmount)
+
 UCLASS()
 class HONEYCOMBER_API AResourceManager : public AActor
 {
@@ -18,6 +20,8 @@ class HONEYCOMBER_API AResourceManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AResourceManager();
+	bool HaveEnoughResources(EResourceType resourceType, int32 numResources);
+	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,6 +34,12 @@ private:
 		TArray<AResourceStorage*> HoneyStores;
 	UPROPERTY(EditAnywhere)
 		TArray<AResourceStorage*> WaxStores;
+
+	TMap<EResourceType, int32> ResourcesData = {
+		{EResourceType::HONEY, 0},
+		{EResourceType::WAX, 0},
+		{EResourceType::ITEM, 0}
+	};
 
 	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 };

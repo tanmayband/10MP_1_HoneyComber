@@ -11,12 +11,23 @@
 
 void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot)
 {
-	ClearOptions();
 	SetupPopupName(PopupName);
 	UCanvasPanelSlot* ContainerSlot = Cast<UCanvasPanelSlot>(Container->Slot);
 	ContainerSlot->SetAnchors(FAnchors(PopupPivot.X, PopupPivot.Y));
 	ContainerSlot->SetAlignment(PopupPivot);;
+	SetupPopupOptions(PopupOptions);
+	
+	//HighlightInteractionOption(0);
+}
 
+void UInteractionPopup::SetupPopupName(FString PopupName)
+{
+	InteractableName->SetText(FText::FromString(PopupName));
+}
+
+void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions)
+{
+	ClearOptions();
 	int32 iOption(0);
 	for (FString option : PopupOptions)
 	{
@@ -31,12 +42,6 @@ void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptio
 		AllOptions.Add(newOption);
 		iOption++;
 	}
-	//HighlightInteractionOption(0);
-}
-
-void UInteractionPopup::SetupPopupName(FString PopupName)
-{
-	InteractableName->SetText(FText::FromString(PopupName));
 }
 
 void UInteractionPopup::HighlightInteractionOption(int32 optionIndex)
@@ -67,6 +72,7 @@ void UInteractionPopup::ClearOptions()
 	{
 		if (optionWidget)
 		{
+			//optionWidget->OnOptionSelectedDelegate.Unbind();
 			optionWidget->RemoveFromParent();
 		}
 	}

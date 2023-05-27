@@ -45,6 +45,11 @@ void AResourceStorage::ModifyResourceAmount(int32 amountDelta)
 	ResourceDisplay->UpdateState(FString::Printf(TEXT("%d jars"), CurrentResourceAmount));
 }
 
+int32 AResourceStorage::GetAvailableResources()
+{
+	return CurrentResourceAmount;
+}
+
 int32 AResourceStorage::GetAvailableSpace()
 {
 	return MaxResourceAmount - CurrentResourceAmount;

@@ -13,6 +13,11 @@ AResourceManager::AResourceManager()
 
 }
 
+bool AResourceManager::HaveEnoughResources(EResourceType resourceType, int32 numResources)
+{
+	return ResourcesData[resourceType] >= numResources;
+}
+
 // Called when the game starts or when spawned
 void AResourceManager::BeginPlay()
 {
@@ -50,6 +55,9 @@ int32 AResourceManager::TryAddingResources(EResourceType resourceType, int32 num
 	}
 
 	// how many added eventually?
-	return resourcesToAdd - numResources;
+	int32 resourcesAdded = resourcesToAdd - numResources;
+	ResourcesData[resourceType] += resourcesAdded;
+	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, resourcesAdded);
+	return resourcesAdded;
 }
 

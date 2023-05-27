@@ -20,8 +20,17 @@ class HONEYCOMBER_API AVisitor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AVisitor();
-	void SetupVisitor(EVisitorype visitorType, FString visitorName);
-	void ToggleStateDisplay(bool show);
+	UFUNCTION(BlueprintCallable)
+		void SetupVisitor(EVisitorype visitorType, FString visitorName);
+	UFUNCTION(BlueprintCallable)
+		void UpdateOptions(TArray<FString> responseOptions);
+	UFUNCTION(BlueprintPure)
+		TArray<FString> GetOptions();
+	UFUNCTION(BlueprintCallable)
+		void ToggleStateDisplay(bool show);
+	UFUNCTION(BlueprintCallable)
+		virtual void ProcessOption(int32 optionIndex);
+	void StartTalking();
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,4 +47,5 @@ private:
 	
 	FString VisitorName;
 	EVisitorype VisitorType = EVisitorype::VISITOR;
+	TArray<FString> ResponseOptions = {"Yes, here you go!", "Sorry, we're out"};
 };

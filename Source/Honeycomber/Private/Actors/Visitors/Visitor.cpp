@@ -34,9 +34,29 @@ void AVisitor::SetupVisitor(EVisitorype visitorType, FString visitorName)
 	VisitorName = visitorName;
 }
 
+void AVisitor::UpdateOptions(TArray<FString> responseOptions)
+{
+	ResponseOptions.Empty();
+	ResponseOptions = responseOptions;
+}
+
+TArray<FString> AVisitor::GetOptions()
+{
+	return ResponseOptions;
+}
+
 void AVisitor::ToggleStateDisplay(bool show)
 {
 	VisitorDisplayComponent->SetHiddenInGame(!show);
+}
+
+void AVisitor::ProcessOption(int32 optionIndex)
+{
+}
+
+void AVisitor::StartTalking()
+{
+	ToggleStateDisplay(true);
 }
 
 // Called when the game starts or when spawned
@@ -44,5 +64,6 @@ void AVisitor::BeginPlay()
 {
 	Super::BeginPlay();
 	VisitorDisplay = CastChecked<UStateDisplay, UUserWidget>(VisitorDisplayComponent->GetUserWidgetObject());
+	VisitorDisplay->SetupState("Hi, can I have 2 jars of honey?", "");
 }
 
