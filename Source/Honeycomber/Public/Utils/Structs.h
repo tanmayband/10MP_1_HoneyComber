@@ -11,7 +11,7 @@ struct FExchangeProduct : public FTableRowBase
 	UPROPERTY(EditAnywhere)
 		EResourceType ProductType;
 	UPROPERTY(EditAnywhere)
-		int32 ProductAmount;
+		uint8 ProductAmount;
 };
 
 USTRUCT()

@@ -10,7 +10,7 @@
 class UStaticMeshComponent;
 class UStateDisplay;
 
-DECLARE_DELEGATE_RetVal_TwoParams(int32, FExtractedResourceSignature, EResourceType resourceType, int32 resourceAmount)
+DECLARE_DELEGATE_RetVal_TwoParams(uint8, FExtractedResourceSignature, EResourceType resourceType, uint8 resourceAmount)
 
 UCLASS()
 class HONEYCOMBER_API ABeehive : public AInteractable
@@ -23,8 +23,8 @@ public:
 	void Tick(float DeltaSeconds);
 
 	//UFUNCTION(BlueprintCallable)
-	int32 GetCurrentHoneyJars();
-	void InteractOption(int32 index) override;
+	uint8 GetCurrentHoneyJars();
+	void InteractOption(uint8 index) override;
 	void DisableExtraction(EResourceType resourceType);
 	void UpdateBees();
 
@@ -37,25 +37,25 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* BeehiveMesh;
 	UPROPERTY(EditAnywhere)
-		int32 NumBees = 50;
+		uint8 NumBees = 50;
 	UPROPERTY(EditAnywhere)
-		int32 NumBeesRequiringOneJar = 50;		// should be <= than starter numBees
-	
+		uint8 NumBeesRequiringOneJar = 50;		// should be <= than starter numBees
+
 	UPROPERTY(EditAnywhere)
 		float HoneyJarRatePerBee = 0.001f;		// number of jars per bee per second
 	UPROPERTY(EditAnywhere)
-		int32 MaxHoneyJars = 10;
+		uint8 MaxHoneyJars = 10;
 	float CurrentHoneyJars;
 	UPROPERTY(EditAnywhere)
-		int32 HoneyExtractAmount = 1;
+		uint8 HoneyExtractAmount = 1;
 
 	UPROPERTY(EditAnywhere)
 		float WaxJarRatePerBee = 0.002f;		// number of jars per bee per second
 	UPROPERTY(EditAnywhere)
-		int32 MaxWaxJars = 5;
+		uint8 MaxWaxJars = 5;
 	float CurrentWaxJars;
 	UPROPERTY(EditAnywhere)
-		int32 WaxExtractAmount = 1;
+		uint8 WaxExtractAmount = 1;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UStateDisplay> StateDisplayClass;

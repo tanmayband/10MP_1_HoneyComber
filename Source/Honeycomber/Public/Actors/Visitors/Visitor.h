@@ -30,7 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ToggleDialogueDisplay(bool show);
 	UFUNCTION(BlueprintCallable)
-		virtual void ProcessOption(int32 optionIndex);
+		virtual void ProcessOption(uint8 optionIndex);
 	
 	UDataTable* StartTalking();
 	void DisplayDialogueLine(FString dialogueLine);

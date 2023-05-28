@@ -11,7 +11,7 @@ class UTextBlock;
 class UVerticalBox;
 class UInteractionOption;
 
-DECLARE_DELEGATE_OneParam(FOnOptionSelectedSignature, int32 SelectedOptionIndex)
+DECLARE_DELEGATE_OneParam(FOnOptionSelectedSignature, uint8 SelectedOptionIndex)
 
 UCLASS()
 class HONEYCOMBER_API UInteractionPopup : public UUserWidget
@@ -23,9 +23,9 @@ public:
 	void SetupPopupName(FString PopupName);
 	void SetupPopupOptions(TArray<FString> PopupOptions, TArray<bool> PopupOptionsEnabled = {});
 	void ClearOptions();
-	void HighlightInteractionOption(int32 optionIndex);
+	void HighlightInteractionOption(uint8 optionIndex);
 	void UnhighlightAllInteractionOptions();
-	void ToggleOptionEnabled(int32 optionIndex, bool enabled);
+	void ToggleOptionEnabled(uint8 optionIndex, bool enabled);
 
 	FOnOptionSelectedSignature OnOptionSelectedDelegate;
 
@@ -41,5 +41,5 @@ private:
 	TArray<UInteractionOption*> AllOptions;
 
 	UFUNCTION()
-		void InteractionOptionSelected(int32 optionIndex);
+		void InteractionOptionSelected(uint8 optionIndex);
 };

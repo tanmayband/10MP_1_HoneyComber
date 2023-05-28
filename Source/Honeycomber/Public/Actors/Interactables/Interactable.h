@@ -24,8 +24,8 @@ public:
 	void ToggleInteractionPopup(bool show);
 	void Interact();
 	UFUNCTION()
-		virtual void InteractOption(int32 index);
-	void CycleOptions(int32 nextIndex);
+		virtual void InteractOption(uint8 index);
+	void CycleOptions(uint8 nextIndex);
 	void SetInteractableName(FString newName);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (MakeEditWidget = true))
@@ -49,7 +49,7 @@ protected:
 		FString InteractableName = "SomeInteractable";
 	UPROPERTY(EditAnywhere)
 		TArray<FString> InteractionOptions;
-	int32 CurrentOptionIndex = 0;
+	uint8 CurrentOptionIndex = 0;
 	UPROPERTY(EditAnywhere)
 		FVector2D PopupPivot = FVector2D(0.5,0.5);
 };

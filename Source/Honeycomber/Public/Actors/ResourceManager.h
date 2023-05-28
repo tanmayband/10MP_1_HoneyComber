@@ -11,19 +11,20 @@ class ABeehive;
 class AResourceStorage;
 class AMoneyStorage;
 
-DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, int32 resourceAmount)
+DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, uint8 resourceAmount)
 
 UCLASS()
 class HONEYCOMBER_API AResourceManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AResourceManager();
-	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
-	bool HaveEnoughResources(EResourceType resourceType, int32 numResources);
-	void AddMoney(int32 numMoney);
+	uint8 TryAddingResources(EResourceType resourceType, uint8 numResources);
+	void SellResource(EResourceType resourceType, uint8 numResources);
+	bool HaveEnoughResources(EResourceType resourceType, uint8 numResources);
+	void AddMoney(uint8 numMoney);
 	TMap<EResourceType, uint8> GetResourcesData() { return ResourcesData; };
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
@@ -44,6 +45,12 @@ private:
 	TMap<EResourceType, uint8> ResourcesData = {
 		{EResourceType::HONEY, 0},
 		{EResourceType::WAX, 0},
+		{EResourceType::ITEM, 0}
+	};
+
+	TMap<EResourceType, uint8> ResourcesCost = {
+		{EResourceType::HONEY, 10},
+		{EResourceType::WAX, 5},
 		{EResourceType::ITEM, 0}
 	};
 };

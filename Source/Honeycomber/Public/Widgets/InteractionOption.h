@@ -9,7 +9,7 @@
 class UTextBlock;
 class UImage;
 
-DECLARE_DELEGATE_OneParam(FOnOptionSelectedSignature, int32 SelectedOptionIndex)
+DECLARE_DELEGATE_OneParam(FOnOptionSelectedSignature, uint8 SelectedOptionIndex)
 
 UCLASS()
 class HONEYCOMBER_API UInteractionOption : public UUserWidget
@@ -19,7 +19,7 @@ class HONEYCOMBER_API UInteractionOption : public UUserWidget
 public:
 	void PreConstruct(bool IsDesignTime);
 
-	void SetupOption(FString option, int32 optionIndex);
+	void SetupOption(FString option, uint8 optionIndex);
 	void ToggleHighlightOption(bool highlighted);
 	void ToggleClickableOption(bool clickable);
 
@@ -34,6 +34,6 @@ private:
 		UImage* OptionBG;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 		UTextBlock* OptionName;
-	int32 OptionIndex;
+	uint8 OptionIndex;
 	bool isClickable = true;
 };

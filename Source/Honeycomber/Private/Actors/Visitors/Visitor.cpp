@@ -55,7 +55,7 @@ void AVisitor::ToggleDialogueDisplay(bool show)
 	VisitorDialogueComponent->SetHiddenInGame(!show);
 }
 
-void AVisitor::ProcessOption(int32 optionIndex)
+void AVisitor::ProcessOption(uint8 optionIndex)
 {
 }
 

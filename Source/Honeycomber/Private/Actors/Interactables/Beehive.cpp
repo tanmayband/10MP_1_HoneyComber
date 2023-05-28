@@ -49,37 +49,37 @@ void ABeehive::Tick(float DeltaSeconds)
 	WaxDisplay->UpdateState(FString::Printf(TEXT("%d"), (int)CurrentWaxJars));
 }
 
-int32 ABeehive::GetCurrentHoneyJars()
+uint8 ABeehive::GetCurrentHoneyJars()
 {
 	return CurrentHoneyJars;
 }
 
-void ABeehive::InteractOption(int32 index)
+void ABeehive::InteractOption(uint8 index)
 {
 	switch (index)
 	{
-		case 0:
+	case 0:
+	{
+		if (CurrentHoneyJars > 1)
 		{
-			if(CurrentHoneyJars > 1)
+			if (ExtractedResourceDelegate.IsBound())
 			{
-				if(ExtractedResourceDelegate.IsBound())
-				{
-					CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
-				}
+				CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
 			}
-			break;
 		}
-		case 1:
+		break;
+	}
+	case 1:
+	{
+		if (CurrentWaxJars > 1)
 		{
-			if (CurrentWaxJars > 1)
+			if (ExtractedResourceDelegate.IsBound())
 			{
-				if (ExtractedResourceDelegate.IsBound())
-				{
-					CurrentWaxJars -= ExtractedResourceDelegate.Execute(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
-				}
+				CurrentWaxJars -= ExtractedResourceDelegate.Execute(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
 			}
-			break;
 		}
+		break;
+	}
 	default:
 		break;
 	}
@@ -89,25 +89,25 @@ void ABeehive::DisableExtraction(EResourceType resourceType)
 {
 	switch (resourceType)
 	{
-		case EResourceType::HONEY:
-		{
-			InteractionPopup->ToggleOptionEnabled(0, false);
-			break;
-		}
-		case EResourceType::WAX:
-		{
-			break;
-		}
-		default:
-			break;
+	case EResourceType::HONEY:
+	{
+		InteractionPopup->ToggleOptionEnabled(0, false);
+		break;
+	}
+	case EResourceType::WAX:
+	{
+		break;
+	}
+	default:
+		break;
 	}
 }
 
 void ABeehive::UpdateBees()
 {
 	// how many bees can sustain in current honey
-	int32 possibleBees = CurrentHoneyJars * NumBeesRequiringOneJar;
-	int32 survivingBees = FMath::Min(NumBees, possibleBees);
+	uint8 possibleBees = CurrentHoneyJars * NumBeesRequiringOneJar;
+	uint8 survivingBees = FMath::Min(NumBees, possibleBees);
 	
 	// TODO: tell some widget how many bees died (NumBees - survivingBees)
 

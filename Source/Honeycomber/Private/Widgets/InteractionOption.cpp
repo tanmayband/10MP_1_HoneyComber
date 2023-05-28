@@ -10,7 +10,7 @@ void UInteractionOption::PreConstruct(bool IsDesignTime)
 	//SetVisibility(ESlateVisibility::Visible);
 }
 
-void UInteractionOption::SetupOption(FString option, int32 optionIndex)
+void UInteractionOption::SetupOption(FString option, uint8 optionIndex)
 {
 	OptionIndex = optionIndex;
 	OptionName->SetText(FText::FromString(option));

@@ -32,25 +32,25 @@ void AResourceStorage::OnConstruction(const FTransform& Transform)
 	
 }
 
-void AResourceStorage::SetupResourceStorage(EResourceType resourceType, int32 maxAmount, int32 currentAmount)
+void AResourceStorage::SetupResourceStorage(EResourceType resourceType, uint8 maxAmount, uint8 currentAmount)
 {
 	ResourceType = resourceType;
 	MaxResourceAmount = maxAmount;
 	CurrentResourceAmount = currentAmount;
 }
 
-void AResourceStorage::ModifyResourceAmount(int32 amountDelta)
+void AResourceStorage::ModifyResourceAmount(uint8 amountDelta)
 {
 	CurrentResourceAmount = FMath::Clamp(CurrentResourceAmount + amountDelta, 0, MaxResourceAmount);
 	ResourceDisplay->UpdateState(FString::Printf(TEXT("%d jars"), CurrentResourceAmount));
 }
 
-int32 AResourceStorage::GetAvailableResources()
+uint8 AResourceStorage::GetAvailableResources()
 {
 	return CurrentResourceAmount;
 }
 
-int32 AResourceStorage::GetAvailableSpace()
+uint8 AResourceStorage::GetAvailableSpace()
 {
 	return MaxResourceAmount - CurrentResourceAmount;
 }

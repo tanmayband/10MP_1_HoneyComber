@@ -77,7 +77,7 @@ void AComberCharacter::CycleInteractionOptions(const FInputActionValue& Value)
 {
 	const float CycleDirection = Value.Get<float>();
 	if (CurrentInteractable)
-		CurrentInteractable->CycleOptions((int32)CycleDirection);
+		CurrentInteractable->CycleOptions((uint8)CycleDirection);
 }
 
 void AComberCharacter::HighlightInteractionOption(const FInputActionValue& Value)

@@ -21,10 +21,10 @@ public:
 	// Sets default values for this actor's properties
 	AResourceStorage();
 	void OnConstruction(const FTransform& Transform);
-	void SetupResourceStorage(EResourceType resourceType, int32 maxAmount, int32 currentAmount = 0);
-	void ModifyResourceAmount(int32 amountDelta);
-	int32 GetAvailableResources();
-	int32 GetAvailableSpace();
+	void SetupResourceStorage(EResourceType resourceType, uint8 maxAmount, uint8 currentAmount = 0);
+	void ModifyResourceAmount(uint8 amountDelta);
+	uint8 GetAvailableResources();
+	uint8 GetAvailableSpace();
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,9 +34,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		EResourceType ResourceType = EResourceType::NONE;
 	FString ResourceName;
-	int32 CurrentResourceAmount;
+	uint8 CurrentResourceAmount;
 	UPROPERTY(EditAnywhere)
-		int32 MaxResourceAmount = 10;
+		uint8 MaxResourceAmount = 10;
 
 	UPROPERTY(EditAnywhere)
 		USceneComponent* SceneRoot;

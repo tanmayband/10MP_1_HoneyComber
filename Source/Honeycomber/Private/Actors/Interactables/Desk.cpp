@@ -21,7 +21,7 @@ void ADesk::ClearDeskOptions()
 	InteractionPopup->ClearOptions();
 }
 
-void ADesk::InteractOption(int32 index)
+void ADesk::InteractOption(uint8 index)
 {
 	OnVisitorResponseDelegate.ExecuteIfBound(index);
 }

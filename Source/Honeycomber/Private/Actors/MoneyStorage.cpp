@@ -21,7 +21,7 @@ AMoneyStorage::AMoneyStorage()
 	MoneyDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
-void AMoneyStorage::AddMoney(int32 newMoney)
+void AMoneyStorage::AddMoney(uint8 newMoney)
 {
 	MoneyAmount += newMoney;
 	MoneyDisplay->UpdateState(FString::FromInt(MoneyAmount));

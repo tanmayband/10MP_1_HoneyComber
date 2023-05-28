@@ -28,7 +28,7 @@ void UInteractionPopup::SetupPopupName(FString PopupName)
 void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions, TArray<bool> PopupOptionsEnabled)
 {
 	ClearOptions();
-	int32 iOption(0);
+	uint8 iOption(0);
 	bool toProcessEnabled = PopupOptionsEnabled.Num() > 0;
 	for (FString option : PopupOptions)
 	{
@@ -51,7 +51,7 @@ void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions, TArray<b
 	}
 }
 
-void UInteractionPopup::HighlightInteractionOption(int32 optionIndex)
+void UInteractionPopup::HighlightInteractionOption(uint8 optionIndex)
 {
 	UnhighlightAllInteractionOptions();
 	if (AllOptions.Num() > 0)
@@ -68,7 +68,7 @@ void UInteractionPopup::UnhighlightAllInteractionOptions()
 	}
 }
 
-void UInteractionPopup::ToggleOptionEnabled(int32 optionIndex, bool enabled)
+void UInteractionPopup::ToggleOptionEnabled(uint8 optionIndex, bool enabled)
 {
 	AllOptions[optionIndex]->ToggleClickableOption(enabled);
 }
@@ -86,7 +86,7 @@ void UInteractionPopup::ClearOptions()
 	AllOptions.Empty();
 }
 
-void UInteractionPopup::InteractionOptionSelected(int32 optionIndex)
+void UInteractionPopup::InteractionOptionSelected(uint8 optionIndex)
 {
 	OnOptionSelectedDelegate.ExecuteIfBound(optionIndex);
 }

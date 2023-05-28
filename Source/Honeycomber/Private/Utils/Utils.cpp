@@ -17,6 +17,11 @@ FString EnumUtils::GetResourceName(EResourceType resourceType)
 	return resourceName;
 };
 
+const EResourceType* EnumUtils::EventToResourceName(FString eventName)
+{
+	const EResourceType* foundResource = ResourceToEventName.FindKey(eventName);
+	return foundResource;
+};
 
 const TMap<EResourceType, FString> EnumUtils::ResourceToEventName = {
 		{EResourceType::HONEY, "EventHoney"},

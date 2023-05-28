@@ -49,13 +49,13 @@ void AInteractable::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("Option executed: %s"), *InteractionOptions[CurrentOptionIndex]);
 }
 
-void AInteractable::InteractOption(int32 index)
+void AInteractable::InteractOption(uint8 index)
 {
 	CurrentOptionIndex = index;
 	Interact();
 }
 
-void AInteractable::CycleOptions(int32 nextIndex)
+void AInteractable::CycleOptions(uint8 nextIndex)
 {
 	CurrentOptionIndex = FMath::Clamp(CurrentOptionIndex + nextIndex, 0, InteractionOptions.Num() - 1);
 	InteractionPopup->HighlightInteractionOption(CurrentOptionIndex);

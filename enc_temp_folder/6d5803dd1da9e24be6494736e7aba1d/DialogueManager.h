@@ -41,7 +41,7 @@ private:
 	UDataTable* DialogueTable;
 
 	TMap<FString, uint8> DialogueEventsState;
-	FDialogueDetails CurrentDialogueRow;
+	FDialogueDetails* CurrentDialogueRow;
 	TArray<FDialogueOptionEnabled> DialogueOptions;
 	TArray<FDialogueDetails*> DialogueOptionRows;
 };

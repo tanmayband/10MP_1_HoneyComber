@@ -101,3 +101,29 @@ TArray<FDialogueOptionEnabled> ADialogueManager::ProcessOptions()
 	return DialogueOptions;
 }
 
+FString ADialogueManager::PickOption(uint8 optionIndex)
+{
+	FDialogueDetails* pickedOptionRow = DialogueOptionRows[optionIndex];
+	switch (pickedOptionRow->DialogueType)
+	{
+		case EDialogueType::GIVE:
+		{
+			// find out what was given and how much
+			FString giveEvent = CurrentDialogueRow->DialogueEvent;
+			EResourceType givenResource;
+			const EResourceType* givenResourcePtr = EnumUtils::EventToResourceName(giveEvent);
+			if (givenResourcePtr == nullptr)
+				givenResource = EResourceType::NONE;	// maybe use ITEM for random items?
+			else
+				givenResource = *givenResourcePtr;
+			uint8 givenAmount = CurrentDialogueRow->DialogueEventValue;
+
+			// pass this intel to visitor manager, to give to resource manager
+			OnEventGivenDelegate.ExecuteIfBound(givenResource, givenAmount);
+			break;
+		}
+	}
+
+	return FString();
+}
+

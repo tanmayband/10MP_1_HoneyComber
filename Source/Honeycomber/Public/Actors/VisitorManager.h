@@ -53,6 +53,6 @@ private:
 		UDataTable* CurrentVisitorDialogueTable;
 
 	void SpawnVisitor();
-	void ResourcesUpdated(EResourceType resourceType, int32 numResources);
-	void ResponsePicked(int32 optionIndex);
+	void ResourcesUpdated(EResourceType resourceType, uint8 numResources);
+	void ResponsePicked(uint8 optionIndex);
 };

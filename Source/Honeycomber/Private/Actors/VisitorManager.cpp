@@ -58,6 +58,7 @@ void AVisitorManager::BeginPlay()
 	SaleDesk->OnVisitorResponseDelegate.BindUObject(this, &AVisitorManager::ResponsePicked);
 
 	DialogueManager->SetupDialogueManager(ResourceManager->GetResourcesData());
+	DialogueManager->OnEventGivenDelegate.BindUObject(ResourceManager, &AResourceManager::SellResource);
 
 	SpawnVisitor();
 }
@@ -78,7 +79,7 @@ void AVisitorManager::SpawnVisitor()
 	CurrentVisitor->SetupVisitor(EVisitorType::CUSTOMER, "TestCustomer");
 }
 
-void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numResources)
+void AVisitorManager::ResourcesUpdated(EResourceType resourceType, uint8 numResources)
 {
 	if (CurrentVisitor && CurrentVisitorSplineMovementDone)
 	{
@@ -87,13 +88,9 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numReso
 	}
 }
 
-void AVisitorManager::ResponsePicked(int32 optionIndex)
+void AVisitorManager::ResponsePicked(uint8 optionIndex)
 {
-	if(optionIndex == 0)
-	{
-		ResourceManager->TryAddingResources(EResourceType::HONEY, -2);
-		ResourceManager->AddMoney(10);
-	}
+	DialogueManager->PickOption(optionIndex);
 
 	CurrentVisitor->StopTalking();
 	SaleDesk->ClearDeskOptions();

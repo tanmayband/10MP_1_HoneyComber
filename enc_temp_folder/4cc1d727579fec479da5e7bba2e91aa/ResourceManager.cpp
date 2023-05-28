@@ -14,12 +14,12 @@ AResourceManager::AResourceManager()
 
 }
 
-bool AResourceManager::HaveEnoughResources(EResourceType resourceType, int32 numResources)
+bool AResourceManager::HaveEnoughResources(EResourceType resourceType, uint8 numResources)
 {
 	return ResourcesData[resourceType] >= numResources;
 }
 
-void AResourceManager::AddMoney(int32 numMoney)
+void AResourceManager::AddMoney(uint8 numMoney)
 {
 	MoneyStore->AddMoney(numMoney);
 }
@@ -34,36 +34,42 @@ void AResourceManager::BeginPlay()
 	}
 }
 
-int32 AResourceManager::TryAddingResources(EResourceType resourceType, int32 numResources)
+uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 numResources)
 {
-	int32 resourcesToAdd = numResources;
+	uint8 resourcesToAdd = numResources;
 	TArray<AResourceStorage*> resourcesToCheck;
 	switch (resourceType)
 	{
-		case EResourceType::HONEY:
-		{
-			resourcesToCheck = HoneyStores;
-			break;
-		}
-		case EResourceType::WAX:
-		{
-			resourcesToCheck = WaxStores;
-			break;
-		}
+	case EResourceType::HONEY:
+	{
+		resourcesToCheck = HoneyStores;
+		break;
+	}
+	case EResourceType::WAX:
+	{
+		resourcesToCheck = WaxStores;
+		break;
+	}
 	}
 
 	for (AResourceStorage* storage : resourcesToCheck)
 	{
-		int32 spaceAvailable = storage->GetAvailableSpace();
-		int32 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
+		uint8 spaceAvailable = storage->GetAvailableSpace();
+		uint8 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
 		storage->ModifyResourceAmount(resourcesCanBeFit);
 		numResources -= resourcesCanBeFit;
 	}
 
 	// how many added eventually?
-	int32 resourcesAdded = resourcesToAdd - numResources;
+	uint8 resourcesAdded = resourcesToAdd - numResources;
 	ResourcesData[resourceType] += resourcesAdded;
 	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, resourcesAdded);
 	return resourcesAdded;
+}
+
+void AResourceManager::SellResource(EResourceType resourceType, uint8 numResources)
+{
+	TryAddingResources(resourceType, -numResources);
+	AddMoney(ResourcesCost[resourceType] * numResources);
 }
 

@@ -7,7 +7,7 @@
 #include "Utils/Structs.h"
 #include "Desk.generated.h"
 
-DECLARE_DELEGATE_OneParam(FVisitorResponseSignature, int32 responseIndex);
+DECLARE_DELEGATE_OneParam(FVisitorResponseSignature, uint8 responseIndex);
 
 UCLASS()
 class HONEYCOMBER_API ADesk : public AInteractable
@@ -20,5 +20,5 @@ public:
 	void ClearDeskOptions();
 
 private:
-	void InteractOption(int32 index) override;
+	void InteractOption(uint8 index) override;
 };
