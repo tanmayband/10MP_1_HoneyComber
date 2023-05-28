@@ -24,6 +24,7 @@ public:
 	int32 TryAddingResources(EResourceType resourceType, int32 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, int32 numResources);
 	void AddMoney(int32 numMoney);
+	TMap<EResourceType, uint8> GetResourcesData() { return ResourcesData; };
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
 protected:
@@ -40,7 +41,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		AMoneyStorage* MoneyStore;
 
-	TMap<EResourceType, int32> ResourcesData = {
+	TMap<EResourceType, uint8> ResourcesData = {
 		{EResourceType::HONEY, 0},
 		{EResourceType::WAX, 0},
 		{EResourceType::ITEM, 0}

@@ -37,8 +37,7 @@ void AVisitorManager::Tick(float DeltaSeconds)
 			FString CurrentDialogueText = DialogueManager->StartDialogue(CurrentVisitorDialogueTable, "1");
 			CurrentVisitor->DisplayDialogueLine(CurrentDialogueText);
 
-			SaleDesk->UpdateDeskOptions(DialogueManager->GetOptions(), false);
-			//SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
+			SaleDesk->UpdateDeskOptions(DialogueManager->GetOptions());
 		}
 		else if (CurrentVisitorSplineDirection < 0 && CurrentVisitorSplineProgress <= 0)
 		{
@@ -57,6 +56,8 @@ void AVisitorManager::BeginPlay()
 
 	ResourceManager->OnUpdatedResourceDelegate.BindUObject(this, &AVisitorManager::ResourcesUpdated);
 	SaleDesk->OnVisitorResponseDelegate.BindUObject(this, &AVisitorManager::ResponsePicked);
+
+	DialogueManager->SetupDialogueManager(ResourceManager->GetResourcesData());
 
 	SpawnVisitor();
 }
@@ -81,7 +82,8 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, int32 numReso
 {
 	if (CurrentVisitor && CurrentVisitorSplineMovementDone)
 	{
-		SaleDesk->UpdateDeskOptions(CurrentVisitor->GetOptions(), ResourceManager->HaveEnoughResources(EResourceType::HONEY, 2));
+		DialogueManager->UpdateResourcesState(resourceType, numResources);
+		SaleDesk->UpdateDeskOptions(DialogueManager->GetOptions());
 	}
 }
 

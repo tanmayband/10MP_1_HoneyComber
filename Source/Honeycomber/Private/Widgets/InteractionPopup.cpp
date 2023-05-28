@@ -25,10 +25,11 @@ void UInteractionPopup::SetupPopupName(FString PopupName)
 	InteractableName->SetText(FText::FromString(PopupName));
 }
 
-void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions)
+void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions, TArray<bool> PopupOptionsEnabled)
 {
 	ClearOptions();
 	int32 iOption(0);
+	bool toProcessEnabled = PopupOptionsEnabled.Num() > 0;
 	for (FString option : PopupOptions)
 	{
 		UInteractionOption* newOption = CreateWidget<UInteractionOption>(GetWorld()->GetFirstPlayerController(), InteractionOptionClass);
@@ -38,8 +39,14 @@ void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions)
 		newOptionSlot->SetPadding(FMargin(0, 10, 0, 0));
 
 		newOption->OnOptionSelectedDelegate.BindUObject(this, &UInteractionPopup::InteractionOptionSelected);
-
+		
 		AllOptions.Add(newOption);
+
+		if (toProcessEnabled)
+		{
+			ToggleOptionEnabled(iOption, PopupOptionsEnabled[iOption]);
+		}
+
 		iOption++;
 	}
 }

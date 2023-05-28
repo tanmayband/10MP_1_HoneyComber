@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/Interactables/Interactable.h"
+#include "Utils/Structs.h"
 #include "Desk.generated.h"
 
 DECLARE_DELEGATE_OneParam(FVisitorResponseSignature, int32 responseIndex);
@@ -15,7 +16,7 @@ class HONEYCOMBER_API ADesk : public AInteractable
 
 public:
 	FVisitorResponseSignature OnVisitorResponseDelegate;
-	void UpdateDeskOptions(TArray<FString> newOptions, bool haveEnoughResources);
+	void UpdateDeskOptions(TArray<FDialogueOptionEnabled> newOptions);
 	void ClearDeskOptions();
 
 private:

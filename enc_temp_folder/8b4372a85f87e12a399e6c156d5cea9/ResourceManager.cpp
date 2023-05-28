@@ -63,7 +63,7 @@ int32 AResourceManager::TryAddingResources(EResourceType resourceType, int32 num
 	// how many added eventually?
 	int32 resourcesAdded = resourcesToAdd - numResources;
 	ResourcesData[resourceType] += resourcesAdded;
-	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, ResourcesData[resourceType]);
+	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, resourcesAdded);
 	return resourcesAdded;
 }
 

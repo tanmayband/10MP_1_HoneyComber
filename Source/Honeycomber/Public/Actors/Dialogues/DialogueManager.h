@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Utils/Structs.h"
 #include "DialogueManager.generated.h"
 
 class UDataTable;
@@ -17,8 +18,12 @@ class HONEYCOMBER_API ADialogueManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADialogueManager();
+	void SetupDialogueManager(TMap<EResourceType, uint8> ResourcesData);
 	FString StartDialogue(UDataTable* dialogueTable, FName atRowNum);
-	TArray<FString> GetOptions();
+	TArray<FDialogueOptionEnabled> GetOptions() { return DialogueOptions; };
+	void UpdateResourcesState(EResourceType resourceType, uint8 resourceAmount);
+	void UpdateEventsState(FString eventName, uint8 eventState);
+	TArray<FDialogueOptionEnabled> ProcessOptions();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,10 +31,10 @@ protected:
 
 private:
 	//UPROPERTY(EditAnywhere)
-		UDataTable* DialogueTable;
+	UDataTable* DialogueTable;
 
-	AResourceManager* ResourceManager;
 	TMap<FString, uint8> DialogueEventsState;
-	TArray<FString> DialogueOptions;
-
+	FDialogueDetails* CurrentDialogueRow;
+	TArray<FDialogueOptionEnabled> DialogueOptions;
+	TArray<FDialogueDetails*> DialogueOptionRows;
 };

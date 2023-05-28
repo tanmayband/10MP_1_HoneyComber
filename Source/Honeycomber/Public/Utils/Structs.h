@@ -30,3 +30,16 @@ struct FDialogueDetails : public FTableRowBase
 	UPROPERTY(EditAnywhere)
 		int8 DialogueEventValue;
 };
+
+USTRUCT()
+struct FDialogueOptionEnabled
+{
+	GENERATED_BODY()
+
+	FDialogueOptionEnabled() {};
+	FDialogueOptionEnabled(FString dialogueText, bool dialogueEnabled) : DialogueText(dialogueText), DialogueEnabled(dialogueEnabled) {};
+	UPROPERTY(EditAnywhere)
+		FString DialogueText;
+	UPROPERTY(EditAnywhere)
+		bool DialogueEnabled;
+};
