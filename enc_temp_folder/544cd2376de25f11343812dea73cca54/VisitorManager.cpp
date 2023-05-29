@@ -87,15 +87,7 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, uint8 numReso
 void AVisitorManager::DisplayDialogue(FString dialogueLine)
 {
 	CurrentVisitor->DisplayDialogueLine(dialogueLine);
-	TArray<FDialogueOptionEnabled> nextOptions = DialogueManager->GetOptions();
-	if(nextOptions.Num() > 0)
-	{
-		SaleDesk->UpdateDeskOptions(nextOptions);
-	}
-	else
-	{
-		DoneTalking();
-	}
+	SaleDesk->UpdateDeskOptions(DialogueManager->GetOptions());
 }
 
 void AVisitorManager::ResponsePicked(uint8 optionIndex)
@@ -104,19 +96,14 @@ void AVisitorManager::ResponsePicked(uint8 optionIndex)
 
 	if (nextDialogueText.IsEmpty())
 	{
-		DoneTalking();
+		CurrentVisitor->StopTalking();
+		SaleDesk->ClearDeskOptions();
+		CurrentVisitorSplineMovementDone = false;
+		CurrentVisitorSplineDirection = -1;
 	}
 	else
 	{
 		DisplayDialogue(nextDialogueText);
 	}
-}
-
-void AVisitorManager::DoneTalking()
-{
-	CurrentVisitor->StopTalking();
-	SaleDesk->ClearDeskOptions();
-	CurrentVisitorSplineMovementDone = false;
-	CurrentVisitorSplineDirection = -1;
 }
 

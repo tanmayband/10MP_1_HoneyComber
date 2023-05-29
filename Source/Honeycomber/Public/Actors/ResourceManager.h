@@ -21,11 +21,11 @@ class HONEYCOMBER_API AResourceManager : public AActor
 public:
 	// Sets default values for this actor's properties
 	AResourceManager();
-	uint8 TryAddingResources(EResourceType resourceType, uint8 numResources);
+	uint8 TryAddingResources(EResourceType resourceType, int16 numResources);
 	void SellResource(EResourceType resourceType, uint8 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, uint8 numResources);
 	void AddMoney(uint8 numMoney);
-	TMap<EResourceType, uint8> GetResourcesData() { return ResourcesData; };
+	TMap<EResourceType, uint16> GetResourcesData() { return ResourcesData; };
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
 protected:
@@ -42,7 +42,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		AMoneyStorage* MoneyStore;
 
-	TMap<EResourceType, uint8> ResourcesData = {
+	TMap<EResourceType, uint16> ResourcesData = {
 		{EResourceType::HONEY, 0},
 		{EResourceType::WAX, 0},
 		{EResourceType::ITEM, 0}

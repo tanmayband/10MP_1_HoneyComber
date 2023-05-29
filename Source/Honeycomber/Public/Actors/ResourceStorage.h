@@ -22,7 +22,7 @@ public:
 	AResourceStorage();
 	void OnConstruction(const FTransform& Transform);
 	void SetupResourceStorage(EResourceType resourceType, uint8 maxAmount, uint8 currentAmount = 0);
-	void ModifyResourceAmount(uint8 amountDelta);
+	void ModifyResourceAmount(int16 amountDelta);
 	uint8 GetAvailableResources();
 	uint8 GetAvailableSpace();
 

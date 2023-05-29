@@ -20,8 +20,9 @@ class HONEYCOMBER_API ADialogueManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADialogueManager();
-	void SetupDialogueManager(TMap<EResourceType, uint8> ResourcesData);
+	void SetupDialogueManager(TMap<EResourceType, uint16> ResourcesData);
 	FString StartDialogue(UDataTable* dialogueTable, FName atRowNum);
+	FString GetNextDialogue(FName atRowNum);
 	TArray<FDialogueOptionEnabled> GetOptions() { return DialogueOptions; };
 
 	void UpdateResourcesState(EResourceType resourceType, uint8 resourceAmount);
@@ -29,8 +30,7 @@ public:
 	TArray<FDialogueOptionEnabled> ProcessOptions();
 
 	FString PickOption(uint8 optionIndex);
-	FEventGivenSignature OnEventGivenDelegate;
-	
+	FEventGivenSignature OnEventGivenDelegate;	
 
 protected:
 	// Called when the game starts or when spawned

@@ -39,7 +39,7 @@ void AResourceStorage::SetupResourceStorage(EResourceType resourceType, uint8 ma
 	CurrentResourceAmount = currentAmount;
 }
 
-void AResourceStorage::ModifyResourceAmount(uint8 amountDelta)
+void AResourceStorage::ModifyResourceAmount(int16 amountDelta)
 {
 	CurrentResourceAmount = FMath::Clamp(CurrentResourceAmount + amountDelta, 0, MaxResourceAmount);
 	ResourceDisplay->UpdateState(FString::Printf(TEXT("%d jars"), CurrentResourceAmount));

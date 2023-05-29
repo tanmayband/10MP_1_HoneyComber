@@ -13,7 +13,7 @@ ADialogueManager::ADialogueManager()
 
 }
 
-void ADialogueManager::SetupDialogueManager(TMap<EResourceType, uint8> ResourcesData)
+void ADialogueManager::SetupDialogueManager(TMap<EResourceType, uint16> ResourcesData)
 {
 	for (const TPair<EResourceType, uint8>& pair : ResourcesData)
 	{
@@ -24,23 +24,27 @@ void ADialogueManager::SetupDialogueManager(TMap<EResourceType, uint8> Resources
 FString ADialogueManager::StartDialogue(UDataTable* dialogueTable, FName atRowNum)
 {
 	DialogueTable = dialogueTable;
+	return GetNextDialogue(atRowNum);
+}
+
+FString ADialogueManager::GetNextDialogue(FName atRowNum)
+{
 	CurrentDialogueRow = FDialogueDetails(*DialogueTable->FindRow<FDialogueDetails>(atRowNum, ""));
 	TArray<FName> nextDialogueRows = CurrentDialogueRow.NextDialogues;
 	DialogueOptionRows.Empty();
+
+	FString currentDialogueEvent = CurrentDialogueRow.DialogueEvent;
+	// If currentDialogueEvent does not exist in TMap, insert it to process a potential upcoming dialogue
+	// Eg. something like, "SUS_EVENT_1"
+	if (!DialogueEventsState.Contains(currentDialogueEvent))
+	{
+		DialogueEventsState.Add(currentDialogueEvent, 1);
+	}
 
 	switch (CurrentDialogueRow.DialogueType)
 	{
 		case EDialogueType::ASK:
 		{
-			FString currentDialogueEvent = CurrentDialogueRow.DialogueEvent;
-
-			// If currentDialogueEvent does not exist in TMap, insert it to process a potential upcoming dialogue
-			// Eg. something like, "SUS_EVENT_1"
-			if (!DialogueEventsState.Contains(currentDialogueEvent))
-			{
-				DialogueEventsState.Add(currentDialogueEvent, 1);
-			}
-
 			// special handling for parameterized dialogues
 			if (CurrentDialogueRow.DialogueText.Contains("{x}"))
 			{
@@ -50,18 +54,23 @@ FString ADialogueManager::StartDialogue(UDataTable* dialogueTable, FName atRowNu
 				CurrentDialogueRow.DialogueText = CurrentDialogueRow.DialogueText.Replace(TEXT("{x}"), *FString::FromInt(eventAmount));
 				CurrentDialogueRow.DialogueEventValue = eventAmount;
 			}
-
-			// parse next dialogue options, and check for disabling
-			for (FName nextDialogueRowName : nextDialogueRows)
-			{
-				FDialogueDetails* nextDialogueRow = DialogueTable->FindRow<FDialogueDetails>(nextDialogueRowName, "");
-				
-				DialogueOptionRows.Add(nextDialogueRow);
-			}
-			ProcessOptions();
+			break;
+		}
+		case EDialogueType::CHAT:
+		{
 			break;
 		}
 	}
+
+	// parse next dialogue options, and check for disabling
+	for (FName nextDialogueRowName : nextDialogueRows)
+	{
+		FDialogueDetails* nextDialogueRow = DialogueTable->FindRow<FDialogueDetails>(nextDialogueRowName, "");
+
+		DialogueOptionRows.Add(nextDialogueRow);
+	}
+	ProcessOptions();
+
 	return CurrentDialogueRow.DialogueText;
 }
 
@@ -117,13 +126,20 @@ FString ADialogueManager::PickOption(uint8 optionIndex)
 			else
 				givenResource = *givenResourcePtr;
 			uint8 givenAmount = CurrentDialogueRow.DialogueEventValue;
-
+			
 			// pass this intel to visitor manager, to give to resource manager
 			OnEventGivenDelegate.ExecuteIfBound(givenResource, givenAmount);
 			break;
 		}
 	}
 
-	return FString();
+	FString nextDialogue;
+	if (pickedOptionRow->NextDialogues.Num() > 0)
+	{
+		// get next dialogue
+		nextDialogue = GetNextDialogue(pickedOptionRow->NextDialogues[0]);
+	}
+
+	return nextDialogue;
 }
 

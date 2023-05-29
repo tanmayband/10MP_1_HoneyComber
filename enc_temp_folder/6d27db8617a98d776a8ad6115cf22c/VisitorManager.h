@@ -47,7 +47,7 @@ private:
 	float VisitorSplineDuration = 5.0f;
 	float VisitorSplineLength;
 	float CurrentVisitorSplineProgress;
-	int8 CurrentVisitorSplineDirection = 1;
+	uint8 CurrentVisitorSplineDirection = 1;
 	bool CurrentVisitorSplineMovementDone;
 	UPROPERTY(EditAnywhere)
 		UDataTable* CurrentVisitorDialogueTable;
@@ -56,5 +56,4 @@ private:
 	void ResourcesUpdated(EResourceType resourceType, uint8 numResources);
 	void DisplayDialogue(FString dialogueLine);
 	void ResponsePicked(uint8 optionIndex);
-	void DoneTalking();
 };

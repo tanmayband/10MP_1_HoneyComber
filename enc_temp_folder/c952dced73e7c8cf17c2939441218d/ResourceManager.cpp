@@ -34,8 +34,9 @@ void AResourceManager::BeginPlay()
 	}
 }
 
-uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 numResources)
+uint8 AResourceManager::TryAddingResources(EResourceType resourceType, int16 numResources)
 {
+	UE_LOG(LogTemp, Warning, TEXT("TryAddingResources %d"), numResources);
 	uint8 resourcesToAdd = numResources;
 	TArray<AResourceStorage*> resourcesToCheck;
 	switch (resourceType)
@@ -54,8 +55,8 @@ uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 num
 
 	for (AResourceStorage* storage : resourcesToCheck)
 	{
-		uint8 spaceAvailable = storage->GetAvailableSpace();
-		uint8 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
+		int16 spaceAvailable = storage->GetAvailableSpace();
+		int16 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
 		storage->ModifyResourceAmount(resourcesCanBeFit);
 		numResources -= resourcesCanBeFit;
 	}
@@ -63,12 +64,13 @@ uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 num
 	// how many added eventually?
 	uint8 resourcesAdded = resourcesToAdd - numResources;
 	ResourcesData[resourceType] += resourcesAdded;
-	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, resourcesAdded);
+	OnUpdatedResourceDelegate.ExecuteIfBound(resourceType, ResourcesData[resourceType]);
 	return resourcesAdded;
 }
 
 void AResourceManager::SellResource(EResourceType resourceType, uint8 numResources)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SellResource %d"), numResources);
 	TryAddingResources(resourceType, -numResources);
 	AddMoney(ResourcesCost[resourceType] * numResources);
 }

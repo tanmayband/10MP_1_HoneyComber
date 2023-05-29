@@ -31,5 +31,5 @@ private:
 	UPROPERTY(EditAnywhere)
 		UWidgetComponent* MoneyDisplayComponent;
 	UStateDisplay* MoneyDisplay;
-	uint8 MoneyAmount;
+	uint32 MoneyAmount;
 };

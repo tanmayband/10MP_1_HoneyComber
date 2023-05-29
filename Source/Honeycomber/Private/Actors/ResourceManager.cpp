@@ -34,7 +34,7 @@ void AResourceManager::BeginPlay()
 	}
 }
 
-uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 numResources)
+uint8 AResourceManager::TryAddingResources(EResourceType resourceType, int16 numResources)
 {
 	uint8 resourcesToAdd = numResources;
 	TArray<AResourceStorage*> resourcesToCheck;
@@ -54,8 +54,8 @@ uint8 AResourceManager::TryAddingResources(EResourceType resourceType, uint8 num
 
 	for (AResourceStorage* storage : resourcesToCheck)
 	{
-		uint8 spaceAvailable = storage->GetAvailableSpace();
-		uint8 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
+		int16 spaceAvailable = storage->GetAvailableSpace();
+		int16 resourcesCanBeFit = FMath::Min(spaceAvailable, numResources);
 		storage->ModifyResourceAmount(resourcesCanBeFit);
 		numResources -= resourcesCanBeFit;
 	}

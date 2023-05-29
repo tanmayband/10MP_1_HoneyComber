@@ -10,7 +10,7 @@
 class UStaticMeshComponent;
 class UStateDisplay;
 
-DECLARE_DELEGATE_RetVal_TwoParams(uint8, FExtractedResourceSignature, EResourceType resourceType, uint8 resourceAmount)
+DECLARE_DELEGATE_RetVal_TwoParams(uint8, FExtractedResourceSignature, EResourceType resourceType, int16 resourceAmount)
 
 UCLASS()
 class HONEYCOMBER_API ABeehive : public AInteractable

@@ -28,7 +28,7 @@ struct FDialogueDetails : public FTableRowBase
 	UPROPERTY(EditAnywhere)
 		TArray<FName> NextDialogues;
 	UPROPERTY(EditAnywhere)
-		int8 DialogueEventValue;
+		uint8 DialogueEventValue;
 };
 
 USTRUCT()
