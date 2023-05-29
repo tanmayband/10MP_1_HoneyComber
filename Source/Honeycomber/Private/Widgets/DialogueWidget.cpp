@@ -10,7 +10,7 @@
 void UDialogueWidget::SetupDialogueWidget(FVector2D pivot)
 {
 	UCanvasPanelSlot* ContainerSlot = Cast<UCanvasPanelSlot>(Container->Slot);
-	ContainerSlot->SetAnchors(FAnchors(pivot.X, pivot.Y));
+	ContainerSlot->SetAnchors(FAnchors(0, 1, pivot.Y, pivot.Y));
 	ContainerSlot->SetAlignment(pivot);
 }
 

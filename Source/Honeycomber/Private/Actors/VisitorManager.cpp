@@ -99,6 +99,7 @@ void AVisitorManager::DisplayDialogue(FString dialogueLine)
 	}
 	else
 	{
+		// TODO: add a timer to show the line and then start moving out (based on line length maybe)
 		DoneTalking();
 	}
 }

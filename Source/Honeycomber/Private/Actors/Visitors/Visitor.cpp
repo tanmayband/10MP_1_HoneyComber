@@ -26,6 +26,7 @@ AVisitor::AVisitor()
 	VisitorDialogueComponent->SetupAttachment(SceneRoot);
 	VisitorDialogueComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	VisitorDialogueComponent->SetRelativeLocation(FVector(-150, 0, 0));
+	VisitorDialogueComponent->SetDrawSize(FVector2D(1000, 500));
 	ToggleDialogueDisplay(false);
 }
 

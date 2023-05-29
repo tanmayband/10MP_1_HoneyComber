@@ -36,7 +36,7 @@ FString ADialogueManager::GetNextDialogue(FName atRowNum)
 	FString currentDialogueEvent = CurrentDialogueRow.DialogueEvent;
 	// If currentDialogueEvent does not exist in TMap, insert it to process a potential upcoming dialogue
 	// Eg. something like, "SUS_EVENT_1"
-	if (!DialogueEventsState.Contains(currentDialogueEvent))
+	if (!currentDialogueEvent.IsEmpty() && !DialogueEventsState.Contains(currentDialogueEvent))
 	{
 		DialogueEventsState.Add(currentDialogueEvent, 1);
 	}
@@ -65,9 +65,11 @@ FString ADialogueManager::GetNextDialogue(FName atRowNum)
 	// parse next dialogue options, and check for disabling
 	for (FName nextDialogueRowName : nextDialogueRows)
 	{
-		FDialogueDetails* nextDialogueRow = DialogueTable->FindRow<FDialogueDetails>(nextDialogueRowName, "");
-
-		DialogueOptionRows.Add(nextDialogueRow);
+		if(!nextDialogueRowName.IsNone())
+		{
+			FDialogueDetails* nextDialogueRow = DialogueTable->FindRow<FDialogueDetails>(nextDialogueRowName, "");
+			DialogueOptionRows.Add(nextDialogueRow);
+		}
 	}
 	ProcessOptions();
 
