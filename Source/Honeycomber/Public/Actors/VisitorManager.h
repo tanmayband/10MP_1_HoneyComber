@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Utils/Enums.h"
+#include "Utils/Structs.h"
 #include "VisitorManager.generated.h"
 
 class USplineComponent;
@@ -13,6 +13,8 @@ class ADesk;
 class AResourceManager;
 class ADialogueManager;
 class UDataTable;
+
+DECLARE_DELEGATE(FVisitorDoneSignature);
 
 UCLASS()
 class HONEYCOMBER_API AVisitorManager : public AActor
@@ -23,6 +25,9 @@ public:
 	// Sets default values for this actor's properties
 	AVisitorManager();
 	void Tick(float DeltaSeconds);
+	void SetupVisitorManager();
+	void SetupNewVisitor(FVisitorData visitorData);
+	FVisitorDoneSignature OnVisitorDoneDelegate;
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,10 +54,8 @@ private:
 	float CurrentVisitorSplineProgress;
 	int8 CurrentVisitorSplineDirection = 1;
 	bool CurrentVisitorSplineMovementDone;
-	UPROPERTY(EditAnywhere)
-		UDataTable* CurrentVisitorDialogueTable;
 
-	void SpawnVisitor();
+	void SpawnVisitor(FVisitorData visitorData);
 	void ResourcesUpdated(EResourceType resourceType, uint8 numResources);
 	void DisplayDialogue(FString dialogueLine);
 	void ResponsePicked(uint8 optionIndex);

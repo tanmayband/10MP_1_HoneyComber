@@ -4,13 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Engine/LevelScriptActor.h"
-#include "Utils/Enums.h"
+#include "Utils/Structs.h"
 #include "ShopLevel.generated.h"
 
-class AComberCharacter;
-class AInteractable;
-class ABeehive;
-class AResourceStorage;
+class AVisitorManager;
+class UDataTable;
 
 UCLASS()
 class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
@@ -21,5 +19,13 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	AComberCharacter* ComberCharacter;
+	UPROPERTY(EditDefaultsOnly)
+		TArray<FVisitorData> VisitorList;
+	/*UPROPERTY(EditDefaultsOnly)
+		TArray<float> VisitorDelays*/;
+	UPROPERTY(EditDefaultsOnly)
+		AVisitorManager* VisitorManager;
+	uint8 CurrentVisitorIndex = -1;
+
+	void NextVisitor();
 };

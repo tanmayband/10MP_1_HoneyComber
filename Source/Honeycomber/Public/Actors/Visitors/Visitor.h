@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Utils/Enums.h"
+#include "Utils/Structs.h"
 #include "Visitor.generated.h"
 
 class USceneComponent;
@@ -22,7 +22,7 @@ public:
 	// Sets default values for this actor's properties
 	AVisitor();
 	UFUNCTION(BlueprintCallable)
-		void SetupVisitor(EVisitorType visitorType, FString visitorName);
+		void SetupVisitor(FVisitorData visitorData);
 	UFUNCTION(BlueprintCallable)
 		void UpdateOptions(TArray<FString> responseOptions);
 	UFUNCTION(BlueprintPure)

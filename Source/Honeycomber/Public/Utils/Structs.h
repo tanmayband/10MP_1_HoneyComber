@@ -43,3 +43,16 @@ struct FDialogueOptionEnabled
 	UPROPERTY(EditAnywhere)
 		bool DialogueEnabled;
 };
+
+USTRUCT(BlueprintType)
+struct FVisitorData
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere)
+		FString VisitorName;
+	UPROPERTY(EditAnywhere)
+		EVisitorType VisitorType;
+	UPROPERTY(EditAnywhere)
+		UDataTable* VisitorDialogueTable;
+};

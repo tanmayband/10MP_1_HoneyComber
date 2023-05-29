@@ -33,22 +33,19 @@ void AVisitorManager::Tick(float DeltaSeconds)
 		if(CurrentVisitorSplineDirection > 0 && CurrentVisitorSplineProgress >= VisitorSplineDuration)
 		{
 			CurrentVisitorSplineMovementDone = true;
-			//CurrentVisitorDialogueTable = CurrentVisitor->StartTalking();
-			FString currentDialogueText = DialogueManager->StartDialogue(CurrentVisitorDialogueTable, "1");
+			FString currentDialogueText = DialogueManager->StartDialogue(CurrentVisitor->StartTalking(), "1");
 			DisplayDialogue(currentDialogueText);
 		}
 		else if (CurrentVisitorSplineDirection < 0 && CurrentVisitorSplineProgress <= 0)
 		{
 			CurrentVisitorSplineMovementDone = true;
-			SpawnVisitor();
+			OnVisitorDoneDelegate.ExecuteIfBound();
 		}
 	}
 }
 
-// Called when the game starts or when spawned
-void AVisitorManager::BeginPlay()
+void AVisitorManager::SetupVisitorManager()
 {
-	Super::BeginPlay();
 	VisitorSplineLength = VisitorSpline->GetSplineLength();
 	VisitorSpline->Duration = VisitorSplineDuration;
 
@@ -57,24 +54,32 @@ void AVisitorManager::BeginPlay()
 
 	DialogueManager->SetupDialogueManager(ResourceManager->GetResourcesData());
 	DialogueManager->OnEventGivenDelegate.BindUObject(ResourceManager, &AResourceManager::SellResource);
-
-	SpawnVisitor();
 }
 
-void AVisitorManager::SpawnVisitor()
+void AVisitorManager::SetupNewVisitor(FVisitorData visitorData)
 {
-	if (CurrentVisitor)
-	{
-		CurrentVisitor->Destroy();
-	}
+	SpawnVisitor(visitorData);
+}
+
+// Called when the game starts or when spawned
+void AVisitorManager::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AVisitorManager::SpawnVisitor(FVisitorData visitorData)
+{
 	CurrentVisitorSplineProgress = 0;
 	CurrentVisitorSplineDirection = 1;
 	CurrentVisitorSplineMovementDone = false;
-	FActorSpawnParameters SpawnInfo;
-	SpawnInfo.Owner = this;
-	FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, false);
-	CurrentVisitor = GetWorld()->SpawnActor<AVisitor>(VisitorClass, VisitorSpline->GetTransformAtSplinePoint(0, ESplineCoordinateSpace::World), SpawnInfo);
-	CurrentVisitor->SetupVisitor(EVisitorType::CUSTOMER, "TestCustomer");
+	if (!CurrentVisitor)
+	{
+		FActorSpawnParameters SpawnInfo;
+		SpawnInfo.Owner = this;
+		FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, false);
+		CurrentVisitor = GetWorld()->SpawnActor<AVisitor>(VisitorClass, VisitorSpline->GetTransformAtSplinePoint(0, ESplineCoordinateSpace::World), SpawnInfo);
+	}
+	CurrentVisitor->SetupVisitor(visitorData);
 }
 
 void AVisitorManager::ResourcesUpdated(EResourceType resourceType, uint8 numResources)

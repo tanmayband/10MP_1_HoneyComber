@@ -29,10 +29,12 @@ AVisitor::AVisitor()
 	ToggleDialogueDisplay(false);
 }
 
-void AVisitor::SetupVisitor(EVisitorType visitorType, FString visitorName)
+void AVisitor::SetupVisitor(FVisitorData visitorData)
 {
-	VisitorType = visitorType;
-	VisitorName = visitorName;
+	VisitorName = visitorData.VisitorName;
+	VisitorType = visitorData.VisitorType;
+	VisitorDialogueTable = visitorData.VisitorDialogueTable;
+
 	VisitorDialogue = CastChecked<UDialogueWidget, UUserWidget>(VisitorDialogueComponent->GetUserWidgetObject());
 	VisitorDialogue->SetupDialogueWidget(FVector2D(0.5, 1));
 	VisitorDialogueComponent->SetPivot(FVector2D(0.5, 1));
