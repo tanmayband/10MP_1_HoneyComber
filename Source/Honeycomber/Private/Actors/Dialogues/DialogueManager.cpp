@@ -52,7 +52,8 @@ FString ADialogueManager::GetNextDialogue(FName atRowNum)
 				uint8 eventAmount = FMath::RandRange(1, 5);
 				// insert this back into the current dialogue row (temporarily)
 				CurrentDialogueRow.DialogueText = CurrentDialogueRow.DialogueText.Replace(TEXT("{x}"), *FString::FromInt(eventAmount));
-				CurrentDialogueRow.DialogueEventValue = eventAmount;
+				DialogueEventsExpectedState.Add(currentDialogueEvent, eventAmount);
+				//CurrentDialogueRow.DialogueEventValue = eventAmount;
 			}
 			break;
 		}
@@ -100,7 +101,7 @@ TArray<FDialogueOptionEnabled> ADialogueManager::ProcessOptions()
 	{
 		if (dialogueOptionRow->DialogueType == EDialogueType::GIVE && dialogueOptionRow->DialogueEvent == CurrentDialogueRow.DialogueEvent)
 		{
-			bool dialogueAvailable = CurrentDialogueRow.DialogueEventValue <= DialogueEventsState[CurrentDialogueRow.DialogueEvent];
+			bool dialogueAvailable = DialogueEventsExpectedState[dialogueOptionRow->DialogueEvent] <= DialogueEventsState[dialogueOptionRow->DialogueEvent];
 			
 			DialogueOptions.Add(FDialogueOptionEnabled(dialogueOptionRow->DialogueText, dialogueAvailable));
 		}
@@ -127,7 +128,7 @@ FString ADialogueManager::PickOption(uint8 optionIndex)
 				givenResource = EResourceType::NONE;	// maybe use ITEM for random items?
 			else
 				givenResource = *givenResourcePtr;
-			uint8 givenAmount = CurrentDialogueRow.DialogueEventValue;
+			uint8 givenAmount = DialogueEventsExpectedState[pickedOptionRow->DialogueEvent];
 			
 			// pass this intel to visitor manager, to give to resource manager
 			OnEventGivenDelegate.ExecuteIfBound(givenResource, givenAmount);

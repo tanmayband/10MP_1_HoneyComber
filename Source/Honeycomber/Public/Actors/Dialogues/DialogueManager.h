@@ -44,4 +44,5 @@ private:
 	FDialogueDetails CurrentDialogueRow;
 	TArray<FDialogueOptionEnabled> DialogueOptions;
 	TArray<FDialogueDetails*> DialogueOptionRows;
+	TMap<FString, uint8> DialogueEventsExpectedState;
 };
