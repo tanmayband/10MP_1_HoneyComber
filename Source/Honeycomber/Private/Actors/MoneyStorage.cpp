@@ -5,6 +5,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/StateDisplay.h"
+#include "Subsystems/MoneyFlowSubsystem.h"
 
 // Sets default values
 AMoneyStorage::AMoneyStorage()
@@ -21,10 +22,9 @@ AMoneyStorage::AMoneyStorage()
 	MoneyDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
-void AMoneyStorage::AddMoney(uint8 newMoney)
+void AMoneyStorage::UpdateMoneyDisplay(uint32 newMoney)
 {
-	MoneyAmount += newMoney;
-	MoneyDisplay->UpdateState(FString::FromInt(MoneyAmount));
+	MoneyDisplay->UpdateState(FString::FromInt(newMoney));
 }
 
 // Called when the game starts or when spawned
@@ -33,5 +33,8 @@ void AMoneyStorage::BeginPlay()
 	Super::BeginPlay();
 	MoneyDisplay = CastChecked<UStateDisplay, UUserWidget>(MoneyDisplayComponent->GetUserWidgetObject());
 	MoneyDisplay->SetupState("Money:", "0");
+
+	UMoneyFlowSubsystem* moneySubsystem = GetGameInstance()->GetSubsystem<UMoneyFlowSubsystem>();
+	moneySubsystem->OnMoneyChangedDelegate.AddUObject(this, &AMoneyStorage::UpdateMoneyDisplay);
 }
 

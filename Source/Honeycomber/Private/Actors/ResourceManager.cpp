@@ -5,6 +5,7 @@
 #include "Actors/Interactables/Beehive.h"
 #include "Actors/ResourceStorage.h"
 #include "Actors/MoneyStorage.h"
+#include "Subsystems/MoneyFlowSubsystem.h"
 
 // Sets default values
 AResourceManager::AResourceManager()
@@ -17,11 +18,6 @@ AResourceManager::AResourceManager()
 bool AResourceManager::HaveEnoughResources(EResourceType resourceType, uint8 numResources)
 {
 	return ResourcesData[resourceType] >= numResources;
-}
-
-void AResourceManager::AddMoney(uint8 numMoney)
-{
-	MoneyStore->AddMoney(numMoney);
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +66,7 @@ uint8 AResourceManager::TryAddingResources(EResourceType resourceType, int16 num
 void AResourceManager::SellResource(EResourceType resourceType, uint8 numResources)
 {
 	TryAddingResources(resourceType, -numResources);
-	AddMoney(ResourcesCost[resourceType] * numResources);
+	UMoneyFlowSubsystem* moneySubsystem = GetGameInstance()->GetSubsystem<UMoneyFlowSubsystem>();
+	moneySubsystem->MoneyAdded(ResourcesCost[resourceType] * numResources);
 }
 

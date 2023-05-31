@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Utils/Structs.h"
 #include "Interactable.generated.h"
 
 class USceneComponent;
@@ -48,7 +49,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 		FString InteractableName = "SomeInteractable";
 	UPROPERTY(EditAnywhere)
-		TArray<FString> InteractionOptions;
+		TArray<FInteractionOptionEnabled> InteractionOptions;
 	uint8 CurrentOptionIndex = 0;
 	UPROPERTY(EditAnywhere)
 		FVector2D PopupPivot = FVector2D(0.5,0.5);

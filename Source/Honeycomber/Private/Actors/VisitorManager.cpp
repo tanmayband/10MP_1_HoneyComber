@@ -92,7 +92,7 @@ void AVisitorManager::ResourcesUpdated(EResourceType resourceType, uint8 numReso
 void AVisitorManager::DisplayDialogue(FString dialogueLine)
 {
 	CurrentVisitor->DisplayDialogueLine(dialogueLine);
-	TArray<FDialogueOptionEnabled> nextOptions = DialogueManager->GetOptions();
+	TArray<FInteractionOptionEnabled> nextOptions = DialogueManager->GetOptions();
 	if(nextOptions.Num() > 0)
 	{
 		SaleDesk->UpdateDeskOptions(nextOptions);

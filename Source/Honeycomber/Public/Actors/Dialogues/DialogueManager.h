@@ -23,11 +23,11 @@ public:
 	void SetupDialogueManager(TMap<EResourceType, uint16> ResourcesData);
 	FString StartDialogue(UDataTable* dialogueTable, FName atRowNum);
 	FString GetNextDialogue(FName atRowNum);
-	TArray<FDialogueOptionEnabled> GetOptions() { return DialogueOptions; };
+	TArray<FInteractionOptionEnabled> GetOptions() { return DialogueOptions; };
 
 	void UpdateResourcesState(EResourceType resourceType, uint8 resourceAmount);
 	void UpdateEventsState(FString eventName, uint8 eventState);
-	TArray<FDialogueOptionEnabled> ProcessOptions();
+	TArray<FInteractionOptionEnabled> ProcessOptions();
 
 	FString PickOption(uint8 optionIndex);
 	FEventGivenSignature OnEventGivenDelegate;	
@@ -42,7 +42,7 @@ private:
 
 	TMap<FString, uint8> DialogueEventsState;
 	FDialogueDetails CurrentDialogueRow;
-	TArray<FDialogueOptionEnabled> DialogueOptions;
+	TArray<FInteractionOptionEnabled> DialogueOptions;
 	TArray<FDialogueDetails*> DialogueOptionRows;
 	TMap<FString, uint8> DialogueEventsExpectedState;
 };

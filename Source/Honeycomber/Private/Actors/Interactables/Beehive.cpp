@@ -56,6 +56,7 @@ uint8 ABeehive::GetCurrentHoneyJars()
 
 void ABeehive::InteractOption(uint8 index)
 {
+	Super::InteractOption(index);
 	switch (index)
 	{
 	case 0:
@@ -123,4 +124,15 @@ void ABeehive::BeginPlay()
 	WaxDisplay = CastChecked<UStateDisplay, UUserWidget>(WaxDisplayComponent->GetUserWidgetObject());
 	HoneyDisplay->SetupState("Honey jars:", "0");
 	WaxDisplay->SetupState("Wax jars:", "0");
+
+	StartContinuousDamage(5, 20);
+}
+
+void ABeehive::ProcessHeal()
+{
+	if (CurrentHealth >= MaxHealth)
+	{
+		// restart damage when reached max health
+		StartContinuousDamage(5, 20);
+	}
 }

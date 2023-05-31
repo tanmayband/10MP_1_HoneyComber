@@ -25,7 +25,6 @@ public:
 	uint8 TryAddingResources(EResourceType resourceType, int16 numResources);
 	void SellResource(EResourceType resourceType, uint8 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, uint8 numResources);
-	void AddMoney(uint8 numMoney);
 	TMap<EResourceType, uint16> GetResourcesData() { return ResourcesData; };
 	FUpdatedResourceSignature OnUpdatedResourceDelegate;
 
@@ -40,11 +39,6 @@ private:
 		TArray<AResourceStorage*> HoneyStores;
 	UPROPERTY(EditAnywhere)
 		TArray<AResourceStorage*> WaxStores;
-	UPROPERTY(EditAnywhere)
-		AMoneyStorage* MoneyStore;
-	UPROPERTY(EditAnywhere)
-		TArray<ADamageableInteractable*> Damageables;
-
 
 	TMap<EResourceType, uint16> ResourcesData = {
 		{EResourceType::HONEY, 0},

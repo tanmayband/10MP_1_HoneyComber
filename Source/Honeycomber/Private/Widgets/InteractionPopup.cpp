@@ -9,7 +9,7 @@
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 
-void UInteractionPopup::SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot)
+void UInteractionPopup::SetupPopup(FString PopupName, TArray<FInteractionOptionEnabled> PopupOptions, FVector2D PopupPivot)
 {
 	SetupPopupName(PopupName);
 	UCanvasPanelSlot* ContainerSlot = Cast<UCanvasPanelSlot>(Container->Slot);
@@ -25,15 +25,14 @@ void UInteractionPopup::SetupPopupName(FString PopupName)
 	InteractableName->SetText(FText::FromString(PopupName));
 }
 
-void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions, TArray<bool> PopupOptionsEnabled)
+void UInteractionPopup::SetupPopupOptions(TArray<FInteractionOptionEnabled> PopupOptions)
 {
 	ClearOptions();
 	uint8 iOption(0);
-	bool toProcessEnabled = PopupOptionsEnabled.Num() > 0;
-	for (FString option : PopupOptions)
+	for (FInteractionOptionEnabled option : PopupOptions)
 	{
 		UInteractionOption* newOption = CreateWidget<UInteractionOption>(GetWorld()->GetFirstPlayerController(), InteractionOptionClass);
-		newOption->SetupOption(option, iOption);
+		newOption->SetupOption(option.OptionText, iOption);
 		OptionsBox->AddChildToVerticalBox(newOption);
 		UVerticalBoxSlot* newOptionSlot = Cast<UVerticalBoxSlot>(newOption->Slot);
 		newOptionSlot->SetPadding(FMargin(0, 10, 0, 0));
@@ -41,11 +40,7 @@ void UInteractionPopup::SetupPopupOptions(TArray<FString> PopupOptions, TArray<b
 		newOption->OnOptionSelectedDelegate.BindUObject(this, &UInteractionPopup::InteractionOptionSelected);
 		
 		AllOptions.Add(newOption);
-
-		if (toProcessEnabled)
-		{
-			ToggleOptionEnabled(iOption, PopupOptionsEnabled[iOption]);
-		}
+		ToggleOptionEnabled(iOption, option.OptionEnabled);
 
 		iOption++;
 	}

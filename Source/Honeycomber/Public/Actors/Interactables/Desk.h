@@ -16,7 +16,7 @@ class HONEYCOMBER_API ADesk : public AInteractable
 
 public:
 	FVisitorResponseSignature OnVisitorResponseDelegate;
-	void UpdateDeskOptions(TArray<FDialogueOptionEnabled> newOptions);
+	void UpdateDeskOptions(TArray<FInteractionOptionEnabled> newOptions);
 	void ClearDeskOptions();
 
 private:

@@ -4,16 +4,9 @@
 #include "Actors/Interactables/Desk.h"
 #include "Widgets/InteractionPopup.h"
 
-void ADesk::UpdateDeskOptions(TArray<FDialogueOptionEnabled> newOptions)
+void ADesk::UpdateDeskOptions(TArray<FInteractionOptionEnabled> newOptions)
 {
-	TArray<FString> newOptionStrings;
-	TArray<bool> newOptionEnableds;
-	for (FDialogueOptionEnabled option : newOptions)
-	{
-		newOptionStrings.Add(option.DialogueText);
-		newOptionEnableds.Add(option.DialogueEnabled);
-	}
-	InteractionPopup->SetupPopupOptions(newOptionStrings, newOptionEnableds);
+	InteractionPopup->SetupPopupOptions(newOptions);
 }
 
 void ADesk::ClearDeskOptions()

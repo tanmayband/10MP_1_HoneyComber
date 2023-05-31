@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Utils/Structs.h"
 #include "InteractionPopup.generated.h"
 
 class UCanvasPanel;
@@ -19,9 +20,9 @@ class HONEYCOMBER_API UInteractionPopup : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	void SetupPopup(FString PopupName, TArray<FString> PopupOptions, FVector2D PopupPivot);
+	void SetupPopup(FString PopupName, TArray<FInteractionOptionEnabled> PopupOptions, FVector2D PopupPivot);
 	void SetupPopupName(FString PopupName);
-	void SetupPopupOptions(TArray<FString> PopupOptions, TArray<bool> PopupOptionsEnabled = {});
+	void SetupPopupOptions(TArray<FInteractionOptionEnabled> PopupOptions);
 	void ClearOptions();
 	void HighlightInteractionOption(uint8 optionIndex);
 	void UnhighlightAllInteractionOptions();

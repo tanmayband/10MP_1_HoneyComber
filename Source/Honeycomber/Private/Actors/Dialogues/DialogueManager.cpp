@@ -94,7 +94,7 @@ void ADialogueManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-TArray<FDialogueOptionEnabled> ADialogueManager::ProcessOptions()
+TArray<FInteractionOptionEnabled> ADialogueManager::ProcessOptions()
 {
 	DialogueOptions.Empty();
 	for (FDialogueDetails* dialogueOptionRow : DialogueOptionRows)
@@ -103,11 +103,11 @@ TArray<FDialogueOptionEnabled> ADialogueManager::ProcessOptions()
 		{
 			bool dialogueAvailable = DialogueEventsExpectedState[dialogueOptionRow->DialogueEvent] <= DialogueEventsState[dialogueOptionRow->DialogueEvent];
 			
-			DialogueOptions.Add(FDialogueOptionEnabled(dialogueOptionRow->DialogueText, dialogueAvailable));
+			DialogueOptions.Add(FInteractionOptionEnabled(dialogueOptionRow->DialogueText, dialogueAvailable));
 		}
 		else
 		{
-			DialogueOptions.Add(FDialogueOptionEnabled(dialogueOptionRow->DialogueText, true));
+			DialogueOptions.Add(FInteractionOptionEnabled(dialogueOptionRow->DialogueText, true));
 		}
 	}
 	return DialogueOptions;

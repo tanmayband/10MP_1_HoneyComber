@@ -32,16 +32,16 @@ struct FDialogueDetails : public FTableRowBase
 };
 
 USTRUCT()
-struct FDialogueOptionEnabled
+struct FInteractionOptionEnabled
 {
 	GENERATED_BODY()
 
-	FDialogueOptionEnabled() {};
-	FDialogueOptionEnabled(FString dialogueText, bool dialogueEnabled) : DialogueText(dialogueText), DialogueEnabled(dialogueEnabled) {};
+	FInteractionOptionEnabled() {};
+	FInteractionOptionEnabled(FString optionText, bool optionEnabled) : OptionText(optionText), OptionEnabled(optionEnabled) {};
 	UPROPERTY(EditAnywhere)
-		FString DialogueText;
+		FString OptionText;
 	UPROPERTY(EditAnywhere)
-		bool DialogueEnabled;
+		bool OptionEnabled = true;
 };
 
 USTRUCT(BlueprintType)

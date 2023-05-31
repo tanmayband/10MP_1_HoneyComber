@@ -18,8 +18,7 @@ class HONEYCOMBER_API AMoneyStorage : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AMoneyStorage();
-	void AddMoney(uint8 newMoney);
-	uint8 GetMoney() { return MoneyAmount; };
+	void UpdateMoneyDisplay(uint32 newMoney);
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,5 +30,4 @@ private:
 	UPROPERTY(EditAnywhere)
 		UWidgetComponent* MoneyDisplayComponent;
 	UStateDisplay* MoneyDisplay;
-	uint32 MoneyAmount;
 };
