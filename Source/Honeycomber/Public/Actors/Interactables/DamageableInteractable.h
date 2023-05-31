@@ -15,6 +15,7 @@ class HONEYCOMBER_API ADamageableInteractable : public AInteractable
 
 public:
 	ADamageableInteractable();
+	virtual void ToggleInteractionPopup(bool show) override;
 	UFUNCTION(BlueprintCallable)
 	void SingleDamage(uint8 damageAmount);
 	UFUNCTION(BlueprintCallable)

@@ -21,7 +21,7 @@ public:
 	AInteractable();
 	void OnConstruction(const FTransform& Transform);
 
-	void ToggleInteractionPopup(bool show);
+	virtual void ToggleInteractionPopup(bool show);
 	void Interact();
 	UFUNCTION()
 		virtual void InteractOption(uint8 index);

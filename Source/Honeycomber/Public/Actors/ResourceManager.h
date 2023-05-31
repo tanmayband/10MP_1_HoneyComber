@@ -10,6 +10,7 @@
 class ABeehive;
 class AResourceStorage;
 class AMoneyStorage;
+class ADamageableInteractable;
 
 DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, uint8 resourceAmount)
 
@@ -41,6 +42,9 @@ private:
 		TArray<AResourceStorage*> WaxStores;
 	UPROPERTY(EditAnywhere)
 		AMoneyStorage* MoneyStore;
+	UPROPERTY(EditAnywhere)
+		TArray<ADamageableInteractable*> Damageables;
+
 
 	TMap<EResourceType, uint16> ResourcesData = {
 		{EResourceType::HONEY, 0},

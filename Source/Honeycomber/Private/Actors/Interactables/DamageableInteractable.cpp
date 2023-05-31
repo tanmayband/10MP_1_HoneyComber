@@ -11,6 +11,13 @@ ADamageableInteractable::ADamageableInteractable()
 	check(HealthDisplayComponent);
 	HealthDisplayComponent->SetupAttachment(SceneRoot);
 	HealthDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthDisplayComponent->SetHiddenInGame(true);
+}
+
+void ADamageableInteractable::ToggleInteractionPopup(bool show)
+{
+	Super::ToggleInteractionPopup(show);
+	HealthDisplayComponent->SetHiddenInGame(!show);
 }
 
 void ADamageableInteractable::SingleDamage(uint8 damageAmount)
@@ -63,15 +70,9 @@ void ADamageableInteractable::ProcessDestroy()
 
 void ADamageableInteractable::UpdateHealthDisplay()
 {
-	if (CurrentHealth < (MaxHealth - 10))
-	{
-		HealthDisplay->SetupState("Health:", FString::FromInt(CurrentHealth));
-		float isBad = CurrentHealth < (MaxHealth / 2);
-		HealthDisplay->SetBGColour(isBad ? FLinearColor(0.6, 0.1, 0, 0.5) : FLinearColor(0.1, 0.6, 0, 0.5));
-		HealthDisplayComponent->SetHiddenInGame(false);
-	}
-	else
-		HealthDisplayComponent->SetHiddenInGame(true);
+	HealthDisplay->SetupState("Health:", FString::FromInt(CurrentHealth));
+	float isBad = CurrentHealth < (MaxHealth / 2);
+	HealthDisplay->SetBGColour(isBad ? FLinearColor(0.6, 0.1, 0, 0.5) : FLinearColor(0.1, 0.6, 0, 0.5));
 }
 
 void ADamageableInteractable::StopContinuousDamage()
