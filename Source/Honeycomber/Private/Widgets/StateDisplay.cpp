@@ -2,6 +2,7 @@
 
 
 #include "Widgets/StateDisplay.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 
 void UStateDisplay::SetupState(FString stateName, FString initialStateValue)
@@ -13,4 +14,9 @@ void UStateDisplay::SetupState(FString stateName, FString initialStateValue)
 void UStateDisplay::UpdateState(FString newStateValue)
 {
 	StateValue->SetText(FText::FromString(newStateValue));
+}
+
+void UStateDisplay::SetBGColour(FLinearColor newColour)
+{
+	StateBG->SetColorAndOpacity(newColour);
 }
