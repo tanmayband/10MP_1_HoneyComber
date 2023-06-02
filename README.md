@@ -9,7 +9,9 @@ Based on the random prompt: _"A fantasy educational game about bee-keeping and p
 1. Functional resource loop: Extract, store, sell. Also functional dialogue system. ***[29/05/2023]***
 2. Health system on beehive and windows, repair ***[31/05/2023]***
 3. Money management (for repair, purchase) ***[31/05/2023]***
-4. Game over screen, after bees dead
-5. Order repair stuff from shop.
-6. Receive notes and note reading UI.
-7. Order more beehives, cupboards.
+4. Pause day anim when visitor at desk. Everything else continues. ***[03/06/2023]***
+5. Game over screen, after bees dead next day
+6. Frames
+7. Order repair stuff from shop.
+8. Receive notes and note reading UI.
+9. Order more beehives, cupboards.

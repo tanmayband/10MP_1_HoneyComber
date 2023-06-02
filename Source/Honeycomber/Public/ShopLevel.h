@@ -9,16 +9,22 @@
 
 class AVisitorManager;
 class UDataTable;
+class ADirectionalLight;
 
 UCLASS()
 class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
 {
 	GENERATED_BODY()
 
+public:
+	AShopLevel();
 protected:
 	virtual void BeginPlay() override;
+	void Tick(float DeltaSeconds) override;
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+		ADirectionalLight* Daylight;
 	UPROPERTY(EditDefaultsOnly)
 		TArray<FVisitorData> VisitorList;
 	/*UPROPERTY(EditDefaultsOnly)
@@ -28,4 +34,8 @@ private:
 	uint8 CurrentVisitorIndex = -1;
 
 	void NextVisitor();
+	bool PauseDay = false;
+	UPROPERTY(EditDefaultsOnly)
+		float DaySpeed = 0.05;
+	float DayProgress = 0;
 };
