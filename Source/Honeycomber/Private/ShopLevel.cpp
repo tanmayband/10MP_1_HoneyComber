@@ -28,13 +28,11 @@ void AShopLevel::BeginPlay()
 	{
 		if (isStartDay)
 		{
-			NextVisitor();
+			PauseDay = false;
 		}
 	});
 
-	FTimerHandle fth;
-	GetWorldTimerManager().SetTimer(fth, [&] {DayCheckpointWidget->StartDayAnim(); }, 2, false);
-	
+	DayCheckpointWidget->StartDayAnim();
 }
 
 void AShopLevel::Tick(float DeltaSeconds)
@@ -43,24 +41,36 @@ void AShopLevel::Tick(float DeltaSeconds)
 
 	if(!PauseDay)
 	{
-		DayProgress = FMath::Clamp(DayProgress + (DeltaSeconds * DaySpeed), 0, 1);
+		DayProgress = FMath::Clamp(DayProgress + (DeltaSeconds / DaySeconds), 0, 1);
 		Daylight->SetActorRotation(
-			FRotator(FQuat::SlerpFullPath(FRotator(90, 0, 0).Quaternion(), FRotator(-180, 0, 0).Quaternion(), DayProgress))
+			FRotator(FQuat::SlerpFullPath(FRotator(10, 0, 0).Quaternion(), FRotator(-180, 0, 0).Quaternion(), DayProgress))
 		);
 		if (DayProgress >= 1)
 		{
+			PauseDay = true;
 			UE_LOG(LogTemp, Warning, TEXT("Day end"));
+			DayCheckpointWidget->EndDayAnim();
+			DayProgress = 0;
+		}
+		else if (!VisitorsStarted && DayProgress >= 0.2)
+		{
+			VisitorsStarted = true;
+			NextVisitor();
 		}
 	}
 }
 
 void AShopLevel::NextVisitor()
 {
-	//PauseDay = false;
+	PauseDay = false;
 	if (++CurrentVisitorIndex < VisitorList.Num())
 	{
 		// go to next visitor after a delay
-		VisitorManager->SetupNewVisitor(VisitorList[CurrentVisitorIndex]);
-		//PauseDay = true;
+		FTimerHandle visitorHandle;
+		GetWorldTimerManager().SetTimer(visitorHandle, [&]
+		{
+			PauseDay = true;
+			VisitorManager->SetupNewVisitor(VisitorList[CurrentVisitorIndex]);
+		},15,false);
 	}
 }

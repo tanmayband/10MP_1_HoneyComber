@@ -35,9 +35,10 @@ private:
 	uint8 CurrentVisitorIndex = -1;
 
 	void NextVisitor();
-	bool PauseDay = false;
+	bool PauseDay = true;
+	bool VisitorsStarted = false;
 	UPROPERTY(EditDefaultsOnly)
-		float DaySpeed = 0.05;
+		float DaySeconds = 60 * 2;
 	float DayProgress = 0;
 
 	UPROPERTY(EditDefaultsOnly)

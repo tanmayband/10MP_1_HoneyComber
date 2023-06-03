@@ -37,6 +37,8 @@ private:
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 		UWidgetAnimation* DayIn;
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+		UWidgetAnimation* DayOut;
 
 	UFUNCTION(BlueprintCallable)
 		void SetBGRadius(float newRadius);

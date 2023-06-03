@@ -4,11 +4,13 @@
 #include "Widgets/DayCheckpoint.h"
 #include "Components/Image.h"
 #include "Animation/WidgetAnimation.h"
+#include "Components/TextBlock.h"
 
 void UDayCheckpoint::SetupCheckpoint(uint8 dayNum)
 {
 	BGMaterial = IrisBG->GetDynamicMaterial();
 	SetBGRadius(0);
+	DayText->SetText(FText::FromString(FString::Printf(TEXT("Day %d"), dayNum)));
 }
 
 void UDayCheckpoint::UpdateDayCount()
@@ -18,12 +20,12 @@ void UDayCheckpoint::UpdateDayCount()
 
 void UDayCheckpoint::StartDayAnim()
 {
-	PlayAnimation(DayIn);
+	PlayAnimationForward(DayIn);
 }
 
 void UDayCheckpoint::EndDayAnim()
 {
-	
+	PlayAnimationForward(DayOut);
 }
 
 void UDayCheckpoint::SetBGRadius(float newRadius)
