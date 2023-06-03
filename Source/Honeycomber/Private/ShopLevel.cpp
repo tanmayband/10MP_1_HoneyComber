@@ -25,7 +25,6 @@ void AShopLevel::BeginPlay()
 
 	DayCheckpointWidget = CreateWidget<UDayCheckpoint>(UGameplayStatics::GetPlayerController(GetWorld(), 0), DayCheckpointWidgetClass);
 	DayCheckpointWidget->AddToViewport();
-	DayCheckpointWidget->SetupCheckpoint(1);
 	DayCheckpointWidget->OnDayAnimDoneDelegate.BindLambda([&](bool isStartDay)
 	{
 		if (isStartDay)
@@ -33,9 +32,14 @@ void AShopLevel::BeginPlay()
 			PauseDay = false;
 			GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 		}
+		else
+		{
+			PauseDay = true;
+			GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
+		}
 	});
 
-	DayCheckpointWidget->StartDayAnim();
+	ResetDay();
 }
 
 void AShopLevel::Tick(float DeltaSeconds)
@@ -53,7 +57,8 @@ void AShopLevel::Tick(float DeltaSeconds)
 			PauseDay = true;
 			UE_LOG(LogTemp, Warning, TEXT("Day end"));
 			DayCheckpointWidget->EndDayAnim();
-			DayProgress = 0;
+			DayNum += 1;
+			ResetDay();
 		}
 		else if (!VisitorsStarted && DayProgress >= 0.2)
 		{
@@ -63,17 +68,39 @@ void AShopLevel::Tick(float DeltaSeconds)
 	}
 }
 
+void AShopLevel::ResetDay()
+{
+	DayProgress = 0;
+	CurrentVisitorIndex = -1;
+	VisitorsStarted = false;
+	DayCheckpointWidget->SetupCheckpoint(DayNum);
+	SetupTodaysVisitors();
+	FTimerHandle nextDayHandle;
+	GetWorldTimerManager().SetTimer(nextDayHandle, [&]
+	{
+		PauseDay = false;
+		DayCheckpointWidget->StartDayAnim();
+	}, 3, false);
+}
+
+void AShopLevel::SetupTodaysVisitors()
+{
+	TodayVisitorList.Empty();
+	UDataTable* TodaysVisitorTable = DaysVisitorTables[DayNum - 1];
+	TodaysVisitorTable->GetAllRows("Converting visitors table to array", TodayVisitorList);
+}
+
 void AShopLevel::NextVisitor()
 {
 	PauseDay = false;
-	if (++CurrentVisitorIndex < VisitorList.Num())
+	if (++CurrentVisitorIndex < TodayVisitorList.Num())
 	{
 		// go to next visitor after a delay
 		FTimerHandle visitorHandle;
 		GetWorldTimerManager().SetTimer(visitorHandle, [&]
 		{
 			PauseDay = true;
-			VisitorManager->SetupNewVisitor(VisitorList[CurrentVisitorIndex]);
+			VisitorManager->SetupNewVisitor(*TodayVisitorList[CurrentVisitorIndex]);
 		},15,false);
 	}
 }

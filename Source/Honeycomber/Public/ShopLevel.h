@@ -27,19 +27,23 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		ADirectionalLight* Daylight;
 	UPROPERTY(EditDefaultsOnly)
-		TArray<FVisitorData> VisitorList;
+		TArray<UDataTable*> DaysVisitorTables;
+	TArray<FVisitorData*> TodayVisitorList;
 	/*UPROPERTY(EditDefaultsOnly)
 		TArray<float> VisitorDelays*/;
 	UPROPERTY(EditDefaultsOnly)
 		AVisitorManager* VisitorManager;
-	uint8 CurrentVisitorIndex = -1;
+	uint8 CurrentVisitorIndex;
 
+	void ResetDay();
+	void SetupTodaysVisitors();
 	void NextVisitor();
 	bool PauseDay = true;
 	bool VisitorsStarted = false;
 	UPROPERTY(EditDefaultsOnly)
 		float DaySeconds = 60 * 2;
 	float DayProgress = 0;
+	uint8 DayNum = 1;
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<UDayCheckpoint> DayCheckpointWidgetClass;

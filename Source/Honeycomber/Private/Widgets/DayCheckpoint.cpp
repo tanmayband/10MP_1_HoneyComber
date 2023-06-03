@@ -18,7 +18,7 @@ void UDayCheckpoint::SetupCheckpoint(uint8 dayNum)
 	DayText->SetText(FText::FromString(FString::Printf(TEXT("Day %d"), dayNum)));
 	UMoneyFlowSubsystem* moneySubsystem = GetGameInstance()->GetSubsystem<UMoneyFlowSubsystem>();
 	MoneyText->SetText(FText::FromString(FString::Printf(TEXT("Money: %d"), moneySubsystem->GetCurrentMoney())));
-	BeesText->SetText(FText::FromString(FString::Printf(TEXT("Bees: %d"), 200)));
+	BeesText->SetText(FText::FromString(FString::Printf(TEXT("Bees Alive: %d"), 200)));
 }
 
 void UDayCheckpoint::UpdateDayCount()

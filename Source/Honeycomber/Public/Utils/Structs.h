@@ -45,7 +45,7 @@ struct FInteractionOptionEnabled
 };
 
 USTRUCT(BlueprintType)
-struct FVisitorData
+struct FVisitorData : public FTableRowBase
 {
 	GENERATED_BODY()
 	
