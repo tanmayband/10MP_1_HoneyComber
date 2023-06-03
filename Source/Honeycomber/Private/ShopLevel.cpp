@@ -4,6 +4,8 @@
 #include "ShopLevel.h"
 #include "Actors/VisitorManager.h"
 #include "Engine/DirectionalLight.h"
+#include "Widgets/DayCheckpoint.h"
+#include "Kismet/GameplayStatics.h"
 
 AShopLevel::AShopLevel()
 {
@@ -18,11 +20,27 @@ void AShopLevel::BeginPlay()
 
 	VisitorManager->SetupVisitorManager();
 	VisitorManager->OnVisitorDoneDelegate.BindUObject(this, &AShopLevel::NextVisitor);
-	NextVisitor();
+
+	DayCheckpointWidget = CreateWidget<UDayCheckpoint>(UGameplayStatics::GetPlayerController(GetWorld(), 0), DayCheckpointWidgetClass);
+	DayCheckpointWidget->AddToViewport();
+	DayCheckpointWidget->SetupCheckpoint(1);
+	DayCheckpointWidget->OnDayAnimDoneDelegate.BindLambda([&](bool isStartDay)
+	{
+		if (isStartDay)
+		{
+			NextVisitor();
+		}
+	});
+
+	FTimerHandle fth;
+	GetWorldTimerManager().SetTimer(fth, [&] {DayCheckpointWidget->StartDayAnim(); }, 2, false);
+	
 }
 
 void AShopLevel::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 	if(!PauseDay)
 	{
 		DayProgress = FMath::Clamp(DayProgress + (DeltaSeconds * DaySpeed), 0, 1);
@@ -38,11 +56,11 @@ void AShopLevel::Tick(float DeltaSeconds)
 
 void AShopLevel::NextVisitor()
 {
-	PauseDay = false;
+	//PauseDay = false;
 	if (++CurrentVisitorIndex < VisitorList.Num())
 	{
 		// go to next visitor after a delay
 		VisitorManager->SetupNewVisitor(VisitorList[CurrentVisitorIndex]);
-		PauseDay = true;
+		//PauseDay = true;
 	}
 }

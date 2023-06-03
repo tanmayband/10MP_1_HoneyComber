@@ -17,11 +17,11 @@ public:
 	ADamageableInteractable();
 	virtual void ToggleInteractionPopup(bool show) override;
 	UFUNCTION(BlueprintCallable)
-	void SingleDamage(uint8 damageAmount);
+		void SingleDamage(uint8 damageAmount);
 	UFUNCTION(BlueprintCallable)
-	void StartContinuousDamage(uint8 eachDamageAmount, float damageAtInterval);
+		void StartContinuousDamage(uint8 eachDamageAmount, float damageAtInterval);
 	UFUNCTION(BlueprintCallable)
-	void HealDamage();
+		void HealDamage();
 
 protected:
 	UPROPERTY(EditAnywhere)

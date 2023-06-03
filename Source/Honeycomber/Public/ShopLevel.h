@@ -10,6 +10,7 @@
 class AVisitorManager;
 class UDataTable;
 class ADirectionalLight;
+class UDayCheckpoint;
 
 UCLASS()
 class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
@@ -20,7 +21,7 @@ public:
 	AShopLevel();
 protected:
 	virtual void BeginPlay() override;
-	void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -38,4 +39,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		float DaySpeed = 0.05;
 	float DayProgress = 0;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<UDayCheckpoint> DayCheckpointWidgetClass;
+	UDayCheckpoint* DayCheckpointWidget;
 };
