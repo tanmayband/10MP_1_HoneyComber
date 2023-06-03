@@ -30,6 +30,10 @@ private:
 		UImage* IrisBG;
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 		UTextBlock* DayText;
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+		UTextBlock* MoneyText;
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+		UTextBlock* BeesText;
 	UMaterialInstanceDynamic* BGMaterial;
 
 	UPROPERTY(EditAnywhere, Interp)

@@ -18,6 +18,7 @@ public:
 	bool MoneyRequested(uint32 amount);
 	void MoneyAdded(uint32 amount);
 	bool IsMoneyAvailable(uint32 amount);
+	uint32 GetCurrentMoney() { return CurrentMoney; };
 	FMoneyChangedSignature OnMoneyChangedDelegate;
 
 private:

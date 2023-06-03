@@ -16,6 +16,8 @@ void AShopLevel::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
+
 	Daylight->SetActorRotation(FRotator(90, 0, 0));
 
 	VisitorManager->SetupVisitorManager();
@@ -29,6 +31,7 @@ void AShopLevel::BeginPlay()
 		if (isStartDay)
 		{
 			PauseDay = false;
+			GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 		}
 	});
 
