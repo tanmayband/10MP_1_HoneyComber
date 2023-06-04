@@ -29,6 +29,11 @@ void ABeeFrame::SetupFrame(uint8 index)
 	FrameIndex = index;
 }
 
+void ABeeFrame::TogglePopup(bool show)
+{
+	FrameRemovePopupComponent->SetHiddenInGame(!show);
+}
+
 // Called when the game starts or when spawned
 void ABeeFrame::BeginPlay()
 {
@@ -39,6 +44,7 @@ void ABeeFrame::BeginPlay()
 		FInteractionOptionEnabled("Remove (+10 Disturbance)", true)
 	}, PopupPivot);
 	FrameRemovePopup->OnOptionSelectedDelegate.BindUObject(this, &ABeeFrame::FrameInteract);
+	TogglePopup(false);
 }
 
 // Called every frame

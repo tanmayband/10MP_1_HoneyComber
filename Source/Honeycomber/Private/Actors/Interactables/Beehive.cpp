@@ -30,6 +30,12 @@ ABeehive::ABeehive()
 	check(FrameCamera);
 	FrameCamera->SetupAttachment(SceneRoot);
 
+	ExitInspectPopupComponent = CreateDefaultSubobject<UWidgetComponent>("ExitInspectPopup");
+	check(ExitInspectPopupComponent);
+	ExitInspectPopupComponent->SetupAttachment(SceneRoot);
+	ExitInspectPopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	ExitInspectPopupComponent->SetHiddenInGame(true);
+
 	HoneyDisplayComponent = CreateDefaultSubobject<UWidgetComponent>("HoneyDisplay");
 	check(HoneyDisplayComponent);
 	HoneyDisplayComponent->SetupAttachment(SceneRoot);
@@ -48,6 +54,10 @@ ABeehive::ABeehive()
 void ABeehive::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	
+	ExitInspectPopupComponent->SetWidgetClass(InteractionPopupClass);
+	ExitInspectPopupComponent->SetPivot(FVector2D(0, 0.5));
+	
 	HoneyDisplayComponent->SetWidgetClass(StateDisplayClass);
 	WaxDisplayComponent->SetWidgetClass(StateDisplayClass);
 	for (UChildActorComponent* beeFrameActor : BeeFrameComponents)
@@ -144,6 +154,15 @@ void ABeehive::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ExitInspectPopup = CastChecked<UInteractionPopup, UUserWidget>(ExitInspectPopupComponent->GetUserWidgetObject());
+	ExitInspectPopup->SetupPopup(InteractableName, {
+		FInteractionOptionEnabled("Back", true)
+	}, FVector2D(0,0.5));
+	ExitInspectPopup->OnOptionSelectedDelegate.BindLambda([&](uint8 optionIndex)
+	{
+		GoToMainCamera();
+	});
+
 	HoneyDisplay = CastChecked<UStateDisplay, UUserWidget>(HoneyDisplayComponent->GetUserWidgetObject());
 	WaxDisplay = CastChecked<UStateDisplay, UUserWidget>(WaxDisplayComponent->GetUserWidgetObject());
 	HoneyDisplay->SetupState("Honey jars:", "0");
@@ -179,12 +198,34 @@ void ABeehive::ProcessHeal()
 
 void ABeehive::GoToFrameCamera()
 {
+	InteractionPopupComponent->SetHiddenInGame(true);
 	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 	GlobalCamera = GetWorld()->GetFirstPlayerController()->GetViewTarget();
-	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 1);
+	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, CameraBlendTime, EViewTargetBlendFunction::VTBlend_Cubic);
+	FTimerHandle blendHandle;
+	GetWorldTimerManager().SetTimer(blendHandle, [&] {
+		ExitInspectPopupComponent->SetHiddenInGame(false);
+		for (ABeeFrame* beeFrame : BeeFrames)
+		{
+			beeFrame->TogglePopup(true);
+		}
+		},
+		CameraBlendTime, false);
 }
 
 void ABeehive::GoToMainCamera()
 {
-
+	ExitInspectPopupComponent->SetHiddenInGame(true);
+	for (ABeeFrame* beeFrame : BeeFrames)
+	{
+		beeFrame->TogglePopup(false);
+	}
+	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GlobalCamera, CameraBlendTime, EViewTargetBlendFunction::VTBlend_Cubic);
+	GlobalCamera = nullptr;
+	FTimerHandle blendHandle;
+	GetWorldTimerManager().SetTimer(blendHandle, [&] {
+		InteractionPopupComponent->SetHiddenInGame(false);
+		GetWorld()->GetFirstPlayerController()->ResetIgnoreMoveInput();
+		},
+		CameraBlendTime, false);
 }

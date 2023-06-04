@@ -22,6 +22,7 @@ public:
 	// Sets default values for this actor's properties
 	ABeeFrame();
 	void SetupFrame(uint8 index);
+	void TogglePopup(bool show);
 	FFrameRemovedSignature OnFrameRemovedEvent;
 
 protected:

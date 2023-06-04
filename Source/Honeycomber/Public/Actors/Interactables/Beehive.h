@@ -98,6 +98,8 @@ private:
 
 	//void CalculateHealth();
 	AActor* GlobalCamera;
+	UPROPERTY(EditAnywhere)
+		float CameraBlendTime = 2;
 	void GoToFrameCamera();
 	void GoToMainCamera();
 
