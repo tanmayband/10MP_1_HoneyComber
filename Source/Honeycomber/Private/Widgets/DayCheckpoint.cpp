@@ -41,6 +41,12 @@ void UDayCheckpoint::EndDayAnim()
 	PlayAnimationForward(DayOut);
 }
 
+void UDayCheckpoint::GameOverAnim()
+{
+	BeesText->SetText(FText::FromString(FString::Printf(TEXT("Bees Alive: 0"))));
+	PlayAnimationForward(GameOver);
+}
+
 void UDayCheckpoint::SetBGRadius(float newRadius)
 {
 	CurrentBGRadius = FMath::Clamp(newRadius,0,1);

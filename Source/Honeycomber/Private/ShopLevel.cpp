@@ -35,8 +35,18 @@ void AShopLevel::BeginPlay()
 		}
 		else
 		{
-			PauseDay = true;
-			GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
+			UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
+			uint8 beesLeft = beehiveSubsystem->UpdateAllBees();
+			if (beesLeft > 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Day end"));
+				DayNum += 1;
+				ResetDay();
+			}
+			else
+			{
+				DayCheckpointWidget->GameOverAnim();
+			}
 		}
 	});
 
@@ -56,17 +66,8 @@ void AShopLevel::Tick(float DeltaSeconds)
 		if (DayProgress >= 1)
 		{
 			PauseDay = true;
-			UE_LOG(LogTemp, Warning, TEXT("Day end"));
+			GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 			DayCheckpointWidget->EndDayAnim();
-			DayNum += 1;
-			UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
-			uint8 beesLeft = beehiveSubsystem->UpdateAllBees();
-			if(beesLeft > 0)
-				ResetDay();
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Bees ded lmao bye loser"));
-			}
 		}
 		else if (!VisitorsStarted && DayProgress >= 0.2)
 		{

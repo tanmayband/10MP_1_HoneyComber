@@ -22,6 +22,7 @@ public:
 	void UpdateDayCount();
 	void StartDayAnim();
 	void EndDayAnim();
+	void GameOverAnim();
 
 	FDayAnimDoneSignature OnDayAnimDoneDelegate;
 
@@ -43,6 +44,8 @@ private:
 		UWidgetAnimation* DayIn;
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 		UWidgetAnimation* DayOut;
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+		UWidgetAnimation* GameOver;
 
 	UFUNCTION(BlueprintCallable)
 		void SetBGRadius(float newRadius);
