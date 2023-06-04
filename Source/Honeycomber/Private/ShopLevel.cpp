@@ -25,7 +25,7 @@ void AShopLevel::BeginPlay()
 	VisitorManager->OnVisitorDoneDelegate.BindUObject(this, &AShopLevel::NextVisitor);
 
 	DayCheckpointWidget = CreateWidget<UDayCheckpoint>(UGameplayStatics::GetPlayerController(GetWorld(), 0), DayCheckpointWidgetClass);
-	DayCheckpointWidget->AddToViewport();
+	//DayCheckpointWidget->AddToViewport();
 	DayCheckpointWidget->OnDayAnimDoneDelegate.BindLambda([&](bool isStartDay)
 	{
 		if (isStartDay)
@@ -84,11 +84,14 @@ void AShopLevel::ResetDay()
 	VisitorsStarted = false;
 	DayCheckpointWidget->SetupCheckpoint(DayNum);
 	SetupTodaysVisitors();
-	FTimerHandle nextDayHandle;
+	
+	/*FTimerHandle nextDayHandle;
 	GetWorldTimerManager().SetTimer(nextDayHandle, [&]
 	{
 		DayCheckpointWidget->StartDayAnim();
-	}, 3, false);
+	}, 3, false);*/
+	PauseDay = false;
+	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 }
 
 void AShopLevel::SetupTodaysVisitors()

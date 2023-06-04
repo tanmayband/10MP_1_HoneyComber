@@ -3,11 +3,14 @@
 
 #include "Actors/Interactables/Beehive.h"
 #include "Components/StaticMeshComponent.h"
+#include "Camera/CameraComponent.h"
 #include "Widgets/InteractionPopup.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/StateDisplay.h"
 #include "Subsystems/ResourceManagerSubsystem.h"
 #include "Subsystems/BeehiveManagerSubsystem.h"
+#include "Components/ChildActorComponent.h"
+#include "Actors/Misc/BeeFrame.h"
 
 ABeehive::ABeehive()
 {
@@ -15,6 +18,17 @@ ABeehive::ABeehive()
 	BeehiveMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BeehiveMesh"));
 	check(BeehiveMesh)
 	BeehiveMesh->SetupAttachment(SceneRoot);
+
+	for (uint8 iFrame = 0; iFrame < 4; iFrame++)
+	{
+		UChildActorComponent* frameActor = CreateDefaultSubobject<UChildActorComponent>(*FString::Printf(TEXT("BeeFrame_%d"), iFrame));
+		frameActor->SetupAttachment(BeehiveMesh);
+		BeeFrameComponents.Add(frameActor);
+	}
+
+	FrameCamera = CreateDefaultSubobject<UCameraComponent>("FrameCamera");
+	check(FrameCamera);
+	FrameCamera->SetupAttachment(SceneRoot);
 
 	HoneyDisplayComponent = CreateDefaultSubobject<UWidgetComponent>("HoneyDisplay");
 	check(HoneyDisplayComponent);
@@ -25,6 +39,10 @@ ABeehive::ABeehive()
 	check(WaxDisplayComponent);
 	WaxDisplayComponent->SetupAttachment(SceneRoot);
 	WaxDisplayComponent->SetWidgetSpace(EWidgetSpace::Screen);
+
+	InteractionOptions = {
+		FInteractionOptionEnabled("Inspect", true)
+	};
 }
 
 void ABeehive::OnConstruction(const FTransform& Transform)
@@ -32,6 +50,10 @@ void ABeehive::OnConstruction(const FTransform& Transform)
 	Super::OnConstruction(Transform);
 	HoneyDisplayComponent->SetWidgetClass(StateDisplayClass);
 	WaxDisplayComponent->SetWidgetClass(StateDisplayClass);
+	for (UChildActorComponent* beeFrameActor : BeeFrameComponents)
+	{
+		beeFrameActor->SetChildActorClass(BeeFrameClass);
+	}
 }
 
 void ABeehive::Tick(float DeltaSeconds)
@@ -64,13 +86,14 @@ void ABeehive::InteractOption(uint8 index)
 	{
 	case 0:
 	{
-		if (CurrentHoneyJars > 1)
-		{
-			CurrentHoneyJars -= resourceSubsystem->TryAddingResources(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
-			//CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
-			
-		}
-		break;
+		GoToFrameCamera();
+		//if (CurrentHoneyJars > 1)
+		//{
+		//	CurrentHoneyJars -= resourceSubsystem->TryAddingResources(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
+		//	//CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
+		//	
+		//}
+		//break;
 	}
 	case 1:
 	{
@@ -126,6 +149,19 @@ void ABeehive::BeginPlay()
 	HoneyDisplay->SetupState("Honey jars:", "0");
 	WaxDisplay->SetupState("Wax jars:", "0");
 
+	uint8 iBeeFrame(0);
+	BeeFrames.Empty();
+	for (UChildActorComponent* beeFrameActor : BeeFrameComponents)
+	{
+		ABeeFrame* beeFrame = CastChecked<ABeeFrame>(beeFrameActor->GetChildActor());
+		beeFrame->SetupFrame(iBeeFrame);
+		BeeFrames.Add(beeFrame);
+		beeFrame->OnFrameRemovedEvent.BindLambda([&](uint8 frameIndex) {
+			BeeFrames[frameIndex]->SetActorHiddenInGame(true);
+		});
+		iBeeFrame++;
+	}
+
 	StartContinuousDamage(5, 20);
 
 	UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
@@ -139,4 +175,16 @@ void ABeehive::ProcessHeal()
 		// restart damage when reached max health
 		StartContinuousDamage(5, 20);
 	}
+}
+
+void ABeehive::GoToFrameCamera()
+{
+	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
+	GlobalCamera = GetWorld()->GetFirstPlayerController()->GetViewTarget();
+	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 1);
+}
+
+void ABeehive::GoToMainCamera()
+{
+
 }

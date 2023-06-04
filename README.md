@@ -11,7 +11,7 @@ Based on the random prompt: _"A fantasy educational game about bee-keeping and p
 3. Money management (for repair, purchase) ***[31/05/2023]***
 4. Pause day anim when visitor at desk. Everything else continues. ***[03/06/2023]***
 5. Game over screen, after bees dead next day ***[04/06/2023]***
-6. Frames
+6. Frames + Extractor
 7. Order repair stuff from shop.
 8. Receive notes and note reading UI.
 9. Order more beehives, cupboards.

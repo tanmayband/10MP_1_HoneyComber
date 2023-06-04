@@ -19,7 +19,7 @@ ADamageableInteractable::ADamageableInteractable()
 void ADamageableInteractable::ToggleInteractionPopup(bool show)
 {
 	Super::ToggleInteractionPopup(show);
-	HealthDisplayComponent->SetHiddenInGame(!show);
+	//HealthDisplayComponent->SetHiddenInGame(!show);
 }
 
 void ADamageableInteractable::SingleDamage(uint8 damageAmount)

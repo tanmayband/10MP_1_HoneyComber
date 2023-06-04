@@ -56,3 +56,12 @@ struct FVisitorData : public FTableRowBase
 	UPROPERTY(EditAnywhere)
 		UDataTable* VisitorDialogueTable;
 };
+
+USTRUCT()
+struct FBeeFrameData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+		float HoneyFill;
+};
