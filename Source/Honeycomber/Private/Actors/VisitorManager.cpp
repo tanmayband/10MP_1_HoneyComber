@@ -5,8 +5,8 @@
 #include "Components/SplineComponent.h"
 #include "Actors/Visitors/Visitor.h"
 #include "Actors/Interactables/Desk.h"
-#include "Actors/ResourceManager.h"
 #include "Actors/Dialogues/DialogueManager.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
 
 // Sets default values
 AVisitorManager::AVisitorManager()
@@ -49,11 +49,12 @@ void AVisitorManager::SetupVisitorManager()
 	VisitorSplineLength = VisitorSpline->GetSplineLength();
 	VisitorSpline->Duration = VisitorSplineDuration;
 
-	ResourceManager->OnUpdatedResourceDelegate.BindUObject(this, &AVisitorManager::ResourcesUpdated);
+	UResourceManagerSubsystem* resourceSubsystem = GetGameInstance()->GetSubsystem<UResourceManagerSubsystem>();
+
+	resourceSubsystem->OnUpdatedResourceDelegate.BindUObject(this, &AVisitorManager::ResourcesUpdated);
 	SaleDesk->OnVisitorResponseDelegate.BindUObject(this, &AVisitorManager::ResponsePicked);
 
-	DialogueManager->SetupDialogueManager(ResourceManager->GetResourcesData());
-	DialogueManager->OnEventGivenDelegate.BindUObject(ResourceManager, &AResourceManager::SellResource);
+	DialogueManager->SetupDialogueManager(resourceSubsystem->GetResourcesData());
 }
 
 void AVisitorManager::SetupNewVisitor(FVisitorData visitorData)

@@ -6,6 +6,8 @@
 #include "Animation/WidgetAnimation.h"
 #include "Components/TextBlock.h"
 #include "Subsystems/MoneyFlowSubsystem.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
+#include "Subsystems/BeehiveManagerSubsystem.h"
 
 void UDayCheckpoint::SetupCheckpoint(uint8 dayNum)
 {
@@ -16,9 +18,12 @@ void UDayCheckpoint::SetupCheckpoint(uint8 dayNum)
 	BeesText->SetRenderOpacity(0);
 
 	DayText->SetText(FText::FromString(FString::Printf(TEXT("Day %d"), dayNum)));
+
 	UMoneyFlowSubsystem* moneySubsystem = GetGameInstance()->GetSubsystem<UMoneyFlowSubsystem>();
 	MoneyText->SetText(FText::FromString(FString::Printf(TEXT("Money: %d"), moneySubsystem->GetCurrentMoney())));
-	BeesText->SetText(FText::FromString(FString::Printf(TEXT("Bees Alive: %d"), 200)));
+
+	UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
+	BeesText->SetText(FText::FromString(FString::Printf(TEXT("Bees Alive: %d"), beehiveSubsystem->GetAllBees())));
 }
 
 void UDayCheckpoint::UpdateDayCount()

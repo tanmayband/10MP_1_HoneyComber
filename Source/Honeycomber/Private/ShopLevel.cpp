@@ -6,6 +6,7 @@
 #include "Engine/DirectionalLight.h"
 #include "Widgets/DayCheckpoint.h"
 #include "Kismet/GameplayStatics.h"
+#include "Subsystems/BeehiveManagerSubsystem.h"
 
 AShopLevel::AShopLevel()
 {
@@ -58,7 +59,14 @@ void AShopLevel::Tick(float DeltaSeconds)
 			UE_LOG(LogTemp, Warning, TEXT("Day end"));
 			DayCheckpointWidget->EndDayAnim();
 			DayNum += 1;
-			ResetDay();
+			UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
+			uint8 beesLeft = beehiveSubsystem->UpdateAllBees();
+			if(beesLeft > 0)
+				ResetDay();
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Bees ded lmao bye loser"));
+			}
 		}
 		else if (!VisitorsStarted && DayProgress >= 0.2)
 		{
@@ -78,7 +86,6 @@ void AShopLevel::ResetDay()
 	FTimerHandle nextDayHandle;
 	GetWorldTimerManager().SetTimer(nextDayHandle, [&]
 	{
-		PauseDay = false;
 		DayCheckpointWidget->StartDayAnim();
 	}, 3, false);
 }

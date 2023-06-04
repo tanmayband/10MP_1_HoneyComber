@@ -7,6 +7,7 @@
 #include "Components/WidgetComponent.h"
 #include "Widgets/StateDisplay.h"
 #include "Utils/Utils.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
 
 // Sets default values
 AResourceStorage::AResourceStorage()
@@ -62,5 +63,8 @@ void AResourceStorage::BeginPlay()
 	ResourceName = EnumUtils::GetResourceName(ResourceType);
 	ResourceDisplay = CastChecked<UStateDisplay, UUserWidget>(ResourceDisplayComponent->GetUserWidgetObject());
 	ResourceDisplay->SetupState(FString::Printf(TEXT("%s:"), *ResourceName), "0 jars");
+
+	UResourceManagerSubsystem* resourceSubsystem = GetGameInstance()->GetSubsystem<UResourceManagerSubsystem>();
+	resourceSubsystem->RegisterStorage(ResourceType, this);
 }
 

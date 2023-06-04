@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Utils/Enums.h"
-#include "ResourceManager.generated.h"
+#include "ResourceManagerSubsystem.generated.h"
 
-class ABeehive;
 class AResourceStorage;
 class AMoneyStorage;
 class ADamageableInteractable;
@@ -15,13 +14,12 @@ class ADamageableInteractable;
 DECLARE_DELEGATE_TwoParams(FUpdatedResourceSignature, EResourceType resourceType, uint8 resourceAmount)
 
 UCLASS()
-class HONEYCOMBER_API AResourceManager : public AActor
+class HONEYCOMBER_API UResourceManagerSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
-
+	
 public:
-	// Sets default values for this actor's properties
-	AResourceManager();
+	void RegisterStorage(EResourceType resourceType, AResourceStorage* storage);
 	uint8 TryAddingResources(EResourceType resourceType, int16 numResources);
 	void SellResource(EResourceType resourceType, uint8 numResources);
 	bool HaveEnoughResources(EResourceType resourceType, uint8 numResources);
@@ -30,15 +28,11 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 private:
-	UPROPERTY(EditAnywhere)
-		TArray<ABeehive*> Beehives;
-	UPROPERTY(EditAnywhere)
-		TArray<AResourceStorage*> HoneyStores;
-	UPROPERTY(EditAnywhere)
-		TArray<AResourceStorage*> WaxStores;
+	TArray<AResourceStorage*> HoneyStores;
+	TArray<AResourceStorage*> WaxStores;
 
 	TMap<EResourceType, uint16> ResourcesData = {
 		{EResourceType::HONEY, 0},

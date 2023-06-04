@@ -26,6 +26,7 @@ public:
 	void InteractOption(uint8 index) override;
 	void DisableExtraction(EResourceType resourceType);
 	void UpdateBees();
+	uint8 GetBees() { return NumBees; };
 
 	FExtractedResourceSignature ExtractedResourceDelegate;
 
@@ -40,7 +41,7 @@ private:
 	/***** STATS *****/
 
 	UPROPERTY(EditAnywhere)
-		uint8 NumBees = 50;
+		uint8 NumBees = 200;
 
 	UPROPERTY(EditAnywhere)
 		float HoneyJarRatePerBee = 0.005f;		// number of jars per bee per unit time
@@ -66,7 +67,7 @@ private:
 		float HoneyGenerationMultiplier = 0.01;
 
 	UPROPERTY(EditAnywhere)
-		uint8 NumBeesRequiringOneJar = 50;		// should be <= than starter numBees
+		uint8 NumBeesRequiringOneJar = 200;		// should be <= than starter numBees
 	/*****************/
 
 	UPROPERTY(EditAnywhere)
@@ -79,6 +80,6 @@ private:
 	UStateDisplay* HoneyDisplay;
 	UStateDisplay* WaxDisplay;
 
-	void CalculateHealth();
+	//void CalculateHealth();
 
 };

@@ -8,7 +8,6 @@
 #include "DialogueManager.generated.h"
 
 class UDataTable;
-class AResourceManager;
 
 DECLARE_DELEGATE_TwoParams(FEventGivenSignature, EResourceType givenType, uint8 givenAmount);
 

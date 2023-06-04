@@ -6,6 +6,8 @@
 #include "Widgets/InteractionPopup.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/StateDisplay.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
+#include "Subsystems/BeehiveManagerSubsystem.h"
 
 ABeehive::ABeehive()
 {
@@ -57,16 +59,16 @@ uint8 ABeehive::GetCurrentHoneyJars()
 void ABeehive::InteractOption(uint8 index)
 {
 	Super::InteractOption(index);
+	UResourceManagerSubsystem* resourceSubsystem = GetGameInstance()->GetSubsystem<UResourceManagerSubsystem>();
 	switch (index)
 	{
 	case 0:
 	{
 		if (CurrentHoneyJars > 1)
 		{
-			if (ExtractedResourceDelegate.IsBound())
-			{
-				CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
-			}
+			CurrentHoneyJars -= resourceSubsystem->TryAddingResources(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
+			//CurrentHoneyJars -= ExtractedResourceDelegate.Execute(EResourceType::HONEY, FMath::Min(HoneyExtractAmount, CurrentHoneyJars));
+			
 		}
 		break;
 	}
@@ -74,10 +76,9 @@ void ABeehive::InteractOption(uint8 index)
 	{
 		if (CurrentWaxJars > 1)
 		{
-			if (ExtractedResourceDelegate.IsBound())
-			{
-				CurrentWaxJars -= ExtractedResourceDelegate.Execute(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
-			}
+			CurrentWaxJars -= resourceSubsystem->TryAddingResources(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
+			//CurrentWaxJars -= ExtractedResourceDelegate.Execute(EResourceType::WAX, FMath::Min(WaxExtractAmount, CurrentWaxJars));
+			
 		}
 		break;
 	}
@@ -107,7 +108,7 @@ void ABeehive::DisableExtraction(EResourceType resourceType)
 void ABeehive::UpdateBees()
 {
 	// how many bees can sustain in current honey
-	uint8 possibleBees = CurrentHoneyJars * NumBeesRequiringOneJar;
+	uint8 possibleBees = (int)CurrentHoneyJars * NumBeesRequiringOneJar;
 	uint8 survivingBees = FMath::Min(NumBees, possibleBees);
 	
 	// TODO: tell some widget how many bees died (NumBees - survivingBees)
@@ -126,6 +127,9 @@ void ABeehive::BeginPlay()
 	WaxDisplay->SetupState("Wax jars:", "0");
 
 	StartContinuousDamage(5, 20);
+
+	UBeehiveManagerSubsystem* beehiveSubsystem = GetGameInstance()->GetSubsystem<UBeehiveManagerSubsystem>();
+	beehiveSubsystem->RegisterBeehive(this);
 }
 
 void ABeehive::ProcessHeal()

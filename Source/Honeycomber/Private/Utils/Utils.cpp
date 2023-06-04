@@ -1,5 +1,4 @@
 #include "Utils/Utils.h"
-#include "Utils.h"
 
 FString EnumUtils::GetResourceName(EResourceType resourceType)
 {

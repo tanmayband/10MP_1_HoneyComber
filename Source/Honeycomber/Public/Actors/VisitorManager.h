@@ -10,7 +10,7 @@
 class USplineComponent;
 class AVisitor;
 class ADesk;
-class AResourceManager;
+//class AResourceManager;
 class ADialogueManager;
 class UDataTable;
 
@@ -43,8 +43,6 @@ private:
 		ADesk* SaleDesk;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AVisitor> VisitorClass;
-	UPROPERTY(EditAnywhere)
-		AResourceManager* ResourceManager;
 	UPROPERTY(EditAnywhere)
 		ADialogueManager* DialogueManager;
 	

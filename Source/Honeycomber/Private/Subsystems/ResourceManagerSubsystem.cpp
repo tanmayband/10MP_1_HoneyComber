@@ -1,36 +1,36 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/ResourceManager.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
 #include "Actors/Interactables/Beehive.h"
 #include "Actors/ResourceStorage.h"
 #include "Actors/MoneyStorage.h"
 #include "Subsystems/MoneyFlowSubsystem.h"
 
-// Sets default values
-AResourceManager::AResourceManager()
+void UResourceManagerSubsystem::RegisterStorage(EResourceType resourceType, AResourceStorage* storage)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
-}
-
-bool AResourceManager::HaveEnoughResources(EResourceType resourceType, uint8 numResources)
-{
-	return ResourcesData[resourceType] >= numResources;
-}
-
-// Called when the game starts or when spawned
-void AResourceManager::BeginPlay()
-{
-	Super::BeginPlay();
-	for (ABeehive* beehive : Beehives)
+	switch (resourceType)
 	{
-		beehive->ExtractedResourceDelegate.BindUObject(this, &AResourceManager::TryAddingResources);
+		case EResourceType::HONEY:
+		{
+			if (!HoneyStores.Contains(storage))
+			{
+				HoneyStores.Add(storage);
+			}
+			break;
+		}
+		case EResourceType::WAX:
+		{
+			if (!WaxStores.Contains(storage))
+			{
+				WaxStores.Add(storage);
+			}
+			break;
+		}
 	}
 }
 
-uint8 AResourceManager::TryAddingResources(EResourceType resourceType, int16 numResources)
+uint8 UResourceManagerSubsystem::TryAddingResources(EResourceType resourceType, int16 numResources)
 {
 	uint8 resourcesToAdd = numResources;
 	TArray<AResourceStorage*> resourcesToCheck;
@@ -63,10 +63,19 @@ uint8 AResourceManager::TryAddingResources(EResourceType resourceType, int16 num
 	return resourcesAdded;
 }
 
-void AResourceManager::SellResource(EResourceType resourceType, uint8 numResources)
+void UResourceManagerSubsystem::SellResource(EResourceType resourceType, uint8 numResources)
 {
 	TryAddingResources(resourceType, -numResources);
 	UMoneyFlowSubsystem* moneySubsystem = GetGameInstance()->GetSubsystem<UMoneyFlowSubsystem>();
 	moneySubsystem->MoneyAdded(ResourcesCost[resourceType] * numResources);
 }
 
+bool UResourceManagerSubsystem::HaveEnoughResources(EResourceType resourceType, uint8 numResources)
+{
+	return ResourcesData[resourceType] >= numResources;
+}
+
+void UResourceManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	
+}

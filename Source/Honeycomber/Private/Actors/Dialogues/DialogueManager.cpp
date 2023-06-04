@@ -4,6 +4,7 @@
 #include "Actors/Dialogues/DialogueManager.h"
 #include "Utils/Structs.h"
 #include "Utils/Utils.h"
+#include "Subsystems/ResourceManagerSubsystem.h"
 
 // Sets default values
 ADialogueManager::ADialogueManager()
@@ -130,8 +131,9 @@ FString ADialogueManager::PickOption(uint8 optionIndex)
 				givenResource = *givenResourcePtr;
 			uint8 givenAmount = DialogueEventsExpectedState[pickedOptionRow->DialogueEvent];
 			
-			// pass this intel to visitor manager, to give to resource manager
-			OnEventGivenDelegate.ExecuteIfBound(givenResource, givenAmount);
+			UResourceManagerSubsystem* resourceSubsystem = GetGameInstance()->GetSubsystem<UResourceManagerSubsystem>();
+			resourceSubsystem->SellResource(givenResource, givenAmount);
+			//OnEventGivenDelegate.ExecuteIfBound(givenResource, givenAmount);
 			break;
 		}
 	}
