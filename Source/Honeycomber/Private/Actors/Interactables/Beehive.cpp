@@ -174,7 +174,9 @@ void ABeehive::BeginPlay()
 	for (UChildActorComponent* beeFrameActor : BeeFrameComponents)
 	{
 		ABeeFrame* beeFrame = CastChecked<ABeeFrame>(beeFrameActor->GetChildActor());
-		beeFrame->SetupFrame(iBeeFrame);
+		FBeeFrameData beeFrameData;
+		beeFrameData.HoneyFill = FMath::RandRange(0, 100);
+		beeFrame->SetupFrame(iBeeFrame, beeFrameData);
 		BeeFrames.Add(beeFrame);
 		beeFrame->OnFrameRemovedEvent.BindUObject(this, &ABeehive::RemoveFrame);
 		iBeeFrame++;
@@ -247,7 +249,7 @@ bool ABeehive::AcceptFrame(FBeeFrameData frameData)
 		isFrameAccepted = !BeeFrames[iFrame]->isEnabled;
 		if(isFrameAccepted)
 		{
-			// setup BeeFrames[iFrame] with frameData
+			BeeFrames[iFrame]->SetupFrame(iFrame, frameData);
 			BeeFrames[iFrame]->isEnabled = true;
 			BeeFrames[iFrame]->SetActorHiddenInGame(false);
 		}

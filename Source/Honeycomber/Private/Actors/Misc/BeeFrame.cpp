@@ -24,9 +24,11 @@ ABeeFrame::ABeeFrame()
 	FrameRemovePopupComponent->SetWidgetSpace(EWidgetSpace::Screen);
 }
 
-void ABeeFrame::SetupFrame(uint8 index)
+void ABeeFrame::SetupFrame(uint8 index, FBeeFrameData data)
 {
 	FrameIndex = index;
+	FrameData = data;
+	FrameRemovePopup->SetupPopupName(FString::Printf(TEXT("Frame (%d%% full)"), FrameData.HoneyFill));
 }
 
 void ABeeFrame::TogglePopup(bool show)

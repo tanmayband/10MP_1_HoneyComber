@@ -22,7 +22,7 @@ class HONEYCOMBER_API ABeeFrame : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABeeFrame();
-	void SetupFrame(uint8 index);
+	void SetupFrame(uint8 index, FBeeFrameData data);
 	void TogglePopup(bool show);
 	FFrameRemovedSignature OnFrameRemovedEvent;
 	bool isEnabled = true;
