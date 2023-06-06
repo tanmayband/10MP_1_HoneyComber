@@ -9,6 +9,7 @@
 #include "Widgets/StateDisplay.h"
 #include "Subsystems/ResourceManagerSubsystem.h"
 #include "Subsystems/BeehiveManagerSubsystem.h"
+#include "Subsystems/InventorySubsystem.h"
 #include "Components/ChildActorComponent.h"
 #include "Actors/Misc/BeeFrame.h"
 
@@ -175,9 +176,7 @@ void ABeehive::BeginPlay()
 		ABeeFrame* beeFrame = CastChecked<ABeeFrame>(beeFrameActor->GetChildActor());
 		beeFrame->SetupFrame(iBeeFrame);
 		BeeFrames.Add(beeFrame);
-		beeFrame->OnFrameRemovedEvent.BindLambda([&](uint8 frameIndex) {
-			BeeFrames[frameIndex]->SetActorHiddenInGame(true);
-		});
+		beeFrame->OnFrameRemovedEvent.BindUObject(this, &ABeehive::RemoveFrame);
 		iBeeFrame++;
 	}
 
@@ -209,12 +208,16 @@ void ABeehive::GoToFrameCamera()
 		{
 			beeFrame->TogglePopup(true);
 		}
-		},
-		CameraBlendTime, false);
+		UInventorySubsystem* inventorySubsystem = GetGameInstance()->GetSubsystem<UInventorySubsystem>();
+		inventorySubsystem->SetFrameAcceptor(this);
+	},
+	CameraBlendTime, false);
 }
 
 void ABeehive::GoToMainCamera()
 {
+	UInventorySubsystem* inventorySubsystem = GetGameInstance()->GetSubsystem<UInventorySubsystem>();
+	inventorySubsystem->SetFrameAcceptor(nullptr);
 	ExitInspectPopupComponent->SetHiddenInGame(true);
 	for (ABeeFrame* beeFrame : BeeFrames)
 	{
@@ -228,4 +231,37 @@ void ABeehive::GoToMainCamera()
 		GetWorld()->GetFirstPlayerController()->ResetIgnoreMoveInput();
 		},
 		CameraBlendTime, false);
+}
+
+EFrameAcceptorType ABeehive::GetAcceptorType()
+{
+	return EFrameAcceptorType::BEEHIVE;
+}
+
+bool ABeehive::AcceptFrame(FBeeFrameData frameData)
+{
+	bool isFrameAccepted(false);
+	uint8 iFrame(0);
+	while (!isFrameAccepted && iFrame < BeeFrames.Num())
+	{
+		isFrameAccepted = !BeeFrames[iFrame]->isEnabled;
+		if(isFrameAccepted)
+		{
+			// setup BeeFrames[iFrame] with frameData
+			BeeFrames[iFrame]->isEnabled = true;
+			BeeFrames[iFrame]->SetActorHiddenInGame(false);
+		}
+		iFrame++;
+	};
+	return isFrameAccepted;
+}
+
+void ABeehive::RemoveFrame(uint8 frameIndex)
+{
+	UInventorySubsystem* inventorySubsystem = GetGameInstance()->GetSubsystem<UInventorySubsystem>();
+	if (inventorySubsystem->AddFrameToInventory(BeeFrames[frameIndex]->GetFrameData()))
+	{
+		BeeFrames[frameIndex]->isEnabled = false;
+		BeeFrames[frameIndex]->SetActorHiddenInGame(true);
+	}
 }

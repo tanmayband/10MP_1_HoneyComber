@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Actors/Interactables/DamageableInteractable.h"
 #include "Utils/Enums.h"
+#include "Interfaces/FrameAcceptor.h"
 #include "Beehive.generated.h"
 
 class UStaticMeshComponent;
@@ -15,7 +16,7 @@ class ABeeFrame;
 DECLARE_DELEGATE_RetVal_TwoParams(uint8, FExtractedResourceSignature, EResourceType resourceType, int16 resourceAmount)
 
 UCLASS()
-class HONEYCOMBER_API ABeehive : public ADamageableInteractable
+class HONEYCOMBER_API ABeehive : public ADamageableInteractable, public IFrameAcceptor
 {
 	GENERATED_BODY()
 
@@ -103,4 +104,7 @@ private:
 	void GoToFrameCamera();
 	void GoToMainCamera();
 
+	EFrameAcceptorType GetAcceptorType();
+	bool AcceptFrame(FBeeFrameData frameData) override;
+	void RemoveFrame(uint8 frameIndex);
 };

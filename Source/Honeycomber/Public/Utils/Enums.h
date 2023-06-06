@@ -25,3 +25,19 @@ enum class EDialogueType : uint8
 	ASK,
 	GIVE
 };
+
+UENUM()
+enum class EFrameActionType : uint8
+{
+	PUT_BACK,
+	SCRAPE_DUMP,
+	SCRAPE_INSERT
+};
+
+UENUM()
+enum class EFrameAcceptorType : uint8
+{
+	BEEHIVE,
+	DRAINER,
+	CENTRIFUGE
+};

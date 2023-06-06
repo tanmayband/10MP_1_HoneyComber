@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Utils/Structs.h"
 #include "BeeFrame.generated.h"
 
 class USceneComponent;
@@ -24,6 +25,8 @@ public:
 	void SetupFrame(uint8 index);
 	void TogglePopup(bool show);
 	FFrameRemovedSignature OnFrameRemovedEvent;
+	bool isEnabled = true;
+	FBeeFrameData GetFrameData() { return FrameData; };
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,6 +47,7 @@ private:
 		FVector2D PopupPivot = FVector2D(0, 0.5);
 
 	uint8 FrameIndex;
+	FBeeFrameData FrameData;
 	UFUNCTION()
 		void FrameInteract(uint8 optionIndex);
 };

@@ -11,6 +11,7 @@ class AVisitorManager;
 class UDataTable;
 class ADirectionalLight;
 class UDayCheckpoint;
+class UFrameInventory;
 
 UCLASS()
 class HONEYCOMBER_API AShopLevel : public ALevelScriptActor
@@ -45,7 +46,9 @@ private:
 	float DayProgress = 0;
 	uint8 DayNum = 1;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UDayCheckpoint> DayCheckpointWidgetClass;
 	UDayCheckpoint* DayCheckpointWidget;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<UFrameInventory> FrameInventoryClass;
 };

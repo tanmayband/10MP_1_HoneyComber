@@ -63,5 +63,5 @@ struct FBeeFrameData
 	GENERATED_BODY()
 
 	UPROPERTY()
-		float HoneyFill;
+		uint8 HoneyFill;
 };

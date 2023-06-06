@@ -7,6 +7,7 @@
 #include "Widgets/DayCheckpoint.h"
 #include "Kismet/GameplayStatics.h"
 #include "Subsystems/BeehiveManagerSubsystem.h"
+#include "Subsystems/InventorySubsystem.h"
 
 AShopLevel::AShopLevel()
 {
@@ -49,6 +50,9 @@ void AShopLevel::BeginPlay()
 			}
 		}
 	});
+
+	UInventorySubsystem* inventorySubsystem = GetGameInstance()->GetSubsystem<UInventorySubsystem>();
+	inventorySubsystem->InitializeInventory(FrameInventoryClass);
 
 	ResetDay();
 }

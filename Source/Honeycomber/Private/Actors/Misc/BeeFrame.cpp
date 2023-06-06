@@ -40,7 +40,7 @@ void ABeeFrame::BeginPlay()
 	Super::BeginPlay();
 	
 	FrameRemovePopup = CastChecked<UInteractionPopup, UUserWidget>(FrameRemovePopupComponent->GetUserWidgetObject());
-	FrameRemovePopup->SetupPopup("Frame", {
+	FrameRemovePopup->SetupPopup(FString::Printf(TEXT("Frame (%d%% full)"), FrameData.HoneyFill), {
 		FInteractionOptionEnabled("Remove (+10 Disturbance)", true)
 	}, PopupPivot);
 	FrameRemovePopup->OnOptionSelectedDelegate.BindUObject(this, &ABeeFrame::FrameInteract);
