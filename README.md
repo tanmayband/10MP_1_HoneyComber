@@ -13,7 +13,7 @@ Based on the random prompt: _"A fantasy educational game about bee-keeping and p
 5. Game over screen, after bees dead next day ***[04/06/2023]***
 6. Frames
 	1. Frames BP with remove popups and hooks ***[05/06/2023]***
-	2. Add to inventory
+	2. Add to inventory ***[06/06/2023]***
 	3. Generate honey and wax
 7. Extractor
 	1. Dump frame data
